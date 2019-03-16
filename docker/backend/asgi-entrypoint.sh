@@ -7,6 +7,13 @@ done
 
 source env.sh
 
+until cd /app/fieldkeys
+do
+	rm -f 1
+	rm -f meta
+	keyczart create --location=../fieldkeys --purpose=crypt
+	keyczart addkey --location=../fieldkeys --status=primary --size=256
+done
 
 until cd /app/blockserver
 do
@@ -27,11 +34,5 @@ done
 
 ./manage.py migrate
 ./manage.py collectstatic --noinput
-
-mkdir -p logs/pyexchanges
-mkdir -p logs/fcoin
-mkdir fieldkeys
-keyczart create --location=fieldkeys --purpose=crypt
-keyczart addkey --location=fieldkeys --status=primary --size=256
 
 daphne blockserver.asgi:application --bind 0.0.0.0 --port 8000

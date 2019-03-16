@@ -588,7 +588,6 @@ SERVER_CONFIG = {}
 server_config_name = 'fos-server.json'
 load_config(pathjoin(BASE_DIR, '..', 'conf', server_config_name), SERVER_CONFIG)
 OSCAR_SHOP_NAME = SERVER_CONFIG['OSCAR_SHOP_NAME']
-OSCAR_SHOP_TAGLINE = SERVER_CONFIG['OSCAR_SHOP_TAGLINE']
 # email configuration
 EMAIL_HOST = SERVER_CONFIG['EMAIL_HOST']
 EMAIL_USE_SSL = SERVER_CONFIG['EMAIL_USE_SSL']

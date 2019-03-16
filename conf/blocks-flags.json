@@ -1,0 +1,12 @@
+{
+    "btc": {
+    	"block_height": 0,
+    	"addr_block_height": 0,
+    	"tx_block_height": 0
+        },
+	"ethereum": {
+		"block_height": 0,
+		"addr_block_height": 0,
+		"tx_block_height": 0
+		}
+ }

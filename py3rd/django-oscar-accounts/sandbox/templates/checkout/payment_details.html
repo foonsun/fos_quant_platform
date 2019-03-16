@@ -1,0 +1,128 @@
+{% extends 'oscar/checkout/payment_details.html' %}
+{% load currency_filters %}
+{% load i18n %}
+
+{% block payment_details %}
+<div class="sub-header">
+	<h2>{% trans "Enter payment details" %}</h2>
+</div>
+
+{% if not allocation_form %}
+    {# 1. Initial load of page - show form to look up account if they are not blocked #}
+	{% if is_blocked %}
+		<p>{% trans "You are blocked." %}</p>
+	{% else %}
+		{% if user_accounts %}
+			<h3>{% trans "Choose a user account" %}</h3>
+			<form action="." method="post">
+				{% csrf_token %}
+				<table class="table">
+					<thead>
+						<tr>
+							<th></th>
+							<th>{% trans "Account" %}</th>
+							<th>{% trans "Balance" %}</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for account in user_accounts %}
+						<tr>
+							<td><input type="radio" name="code" value="{{ account.code }}"></td>
+							<td>{{ account.name }}</td>
+							<td>{{ account.balance|currency }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+				<button type="submit" class="btn btn-primary" name="action" value="select_account">{% trans 'Select account' %}</button>
+			</form>
+		{% endif %}
+
+		<h3>{% trans "Look up an account" %}</h3>
+		<form action="." method="post">
+			{% csrf_token %}
+			<input type="hidden" name="action" value="select_account" />
+			{% include 'partials/form_fields.html' with form=account_form %}
+			<button type="submit" class="btn btn-primary">{% trans "Check balance" %}</button>
+		</form>
+	{% endif %}
+{% else %}
+	{# 2. An account has been found - choose allocation #}
+	{% with account=allocation_form.account %}
+	<h3>{% trans "Account" %}</h3>
+	<table class="table">
+		<tr>
+			<th>{% trans "Name" %}</th>
+			<td>{{ account.name }}</td>
+		</tr>
+		{% if account.description %}
+		<tr>
+			<th>{% trans "Description" %}</th>
+			<td>{{ account.description }}</td>
+		</tr>
+		{% endif %}
+		{% if account.end_date %}
+		<tr>
+			<th>{% trans "Expiry date" %}</th>
+			<td>{{ account.end_date }}</td>
+		</tr>
+		{% endif %}
+		<tr>
+			<th>{% trans "Balance" %}</th>
+			<td>{{ account.balance|currency }}</td>
+		</tr>
+	</table>
+	{% endwith %}
+	<h3>{% trans "Choose allocation" %}</h3>
+	<p>{% trans "The order total is" %} {% if order_total.is_tax_known %}{{ order_total.incl_tax|currency }}{% else %}{{ order_total.excl_tax|currency }}{% endif %}.</p>
+	<p>{% trans "The maximum allocation from this account is" %} {{ allocation_form.max_allocation|currency }}.</p>
+	<form action="." method="post">
+		{% csrf_token %}
+		{# Include account form hidden #}
+		<div style="display:none">
+			{{ account_form.as_p }}
+		</div>
+		<input type="hidden" name="action" value="allocate" />
+		{% include 'partials/form_fields.html' with form=allocation_form %}
+		<button type="submit" class="btn btn-primary btn-large">{% trans "Allocate" %}</button>{% trans "or" %}
+		<a href="{% url 'checkout:payment-details' %}">{% trans "cancel" %}</a>.
+	</form>
+{% endif %}
+
+{% if account_allocations %}
+	<h3>{% trans "Allocations" %}</h2>
+	<form action="." method="post">
+		{% csrf_token %}
+		<input type="hidden" name="action" value="remove_allocation" />
+		<table id="" class="table">
+			<thead>
+				<tr>
+					<th>{% trans "Account code" %}</th>
+					<th>{% trans "Allocation" %}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for code, amount in account_allocations.items %}
+					<tr>
+						<td>{{ code }}</td>
+						<td>{{ amount|currency }}</td>
+						<td>
+							<button type="submit" class="btn" name="remove_{{ code }}">{% trans "Remove" %}</button>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</form>
+{% endif %}
+
+
+{% if to_allocate == 0 %}
+	<a href="{% url 'checkout:preview' %}" class="btn btn-primary btn-large">{% trans "Continue" %}</a>
+{% else %}
+<p>{% trans "Order total" %}: {% if order_total.is_tax_known %}{{ order_total.incl_tax|currency }}{% else %}{{ order_total.excl_tax|currency }}{% endif %}. {% trans "You need to allocate another" %}
+	{{ to_allocate|currency }}</p>
+{% endif %}
+
+{% endblock %}

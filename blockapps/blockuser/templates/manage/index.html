@@ -1,0 +1,61 @@
+{% extends "layout_semantic.html" %}
+{% load i18n %}
+
+{% block header %}{% endblock %}
+{% block title %}量化策略列表 {% endblock %}
+
+{% block column_left %}
+{% endblock %}
+
+
+{% block content %}
+<div class="ui basic segment">
+  <div class="ui container">
+    <h4 class="ui header">1、您的策略如下：</h4>
+       <!--  <div class="ui labeled button" tabindex="0">
+        <div class="ui blue button">充值</div>
+      </div> -->
+ <table class="ui celled striped table">
+  <thead>
+    <tr><th>
+     策略名称
+    </th>
+  <th>
+     策略有效开始日期 
+    </th>
+  <th>
+     策略有效截止日期
+    </th>
+  <th>
+  	操作 
+    </th>
+  <!-- <th>
+  监控
+  </th> -->
+  </tr></thead>
+<tbody>     
+   {% if quantpolicyorder %}
+ {% for quant in quantpolicyorder%}
+    <tr>
+      <td class="collapsing">
+        <i class="folder icon"></i>{{ quant.policy_name }} 
+      </td>
+      <td>{{ quant.policy_start_time |date:'Y-m-d H:i' }} </td>
+      <td> {{ quant.policy_end_time |date:'Y-m-d H:i' }} </td>
+      <!--  <td> <div class="ui yellow button">查看日志</div> </td> -->
+      <td>
+        <a href="{% url quant.policy_url_add %}" class='ui green button'>增加任务</a>
+        <a href="{% url quant.policy_url_list %}" class='ui green button'>任务列表</a>
+      </td>
+    </tr>
+   {% endfor %}
+  </tbody>
+ <tfoot>
+{% else %}
+<tr> 您没有购买任何策略 </tr>
+{% endif %}
+</tfoot>
+</table>
+</div>
+
+{% endblock content%}

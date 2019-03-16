@@ -1,0 +1,24 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %} 个人中心 {% endblock %}
+
+{% block base_content %}
+<div class="ui basic segment">
+<div class="ui center aligned container">
+<p>您可以在此修改您的密码:</p>
+<div class="ui compact menu">
+  <a href="{% url 'account_change_password' %}" class="item">
+    修改密码
+  </a>
+  <a href="{% url 'account_reset_password' %}" class="item">
+    重置密码
+  </a>
+   <a href="{% url 'account_email' %}" class="item">
+    修改邮箱
+  </a>
+</div>
+</div>
+</div>
+{% endblock %}

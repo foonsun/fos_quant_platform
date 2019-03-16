@@ -1,0 +1,38 @@
+{% load currency_filters %}
+{% load category_tags %}
+{% load i18n %}
+
+<div class="navbar primary navbar-static-top navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header pull-right">
+            {# This is used in mobile view #}
+            <a class="btn btn-default navbar-toggle collapsed" data-toggle="collapse" data-target=".primary-collapse">
+                <span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </span>
+            </a>
+        </div>
+
+   
+
+
+        <div class="navbar-collapse primary-collapse collapse">
+             {% block nav_dropdown %}
+                <ul id="browse" class="nav navbar-nav">
+                	<li><a href="/">{% trans "首页" %}</a></li>
+                	<li><a href="/manage/index/">{% trans "管理面板" %}</a></li>
+                	<li><a href="/catalogue/category/quantstrategy_3/">{% trans "量化策略" %}</a></li>
+                	<li><a href="#">{% trans "白皮书" %}</a></li>
+                	<li><a href="/about/intro">{% trans "关于我们" %}</a></li>
+                </ul>
+                    </li>
+                    {% block nav_extra %}
+                    {% endblock %}
+                </ul>
+            {% endblock %}
+            {% include "partials/search.html" %}
+        </div><!-- /navbar-collapse -->
+    </div>
+</div><!-- /navbar -->

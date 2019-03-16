@@ -1,0 +1,52 @@
+{% extends "customer/emails/base.html" %}
+{% load currency_filters i18n %}
+
+{% block tbody %}
+<tr>
+    <td class="content-block">
+        <p xmlns="http://www.w3.org/1999/html">{% trans '您好' %}</p>
+        <p>{% blocktrans with order_number=order.number %}我们非常高兴和您确认您的订单{{ order_number }}已经收到{% endblocktrans %}</p>
+    </td>
+</tr>
+
+<tr>
+    <td class="content-block">
+        <table class="order">
+            <tbody><tr>
+                <td>{% trans '您的订单包括:' %}</td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="order-items" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            {% for line in order.lines.all %}
+                                <tr>
+                                    <td>{{ line.title }} &times; {{ line.quantity }}</td>
+                                    <td class="alignright">{{ line.line_price_incl_tax|currency:order.currency }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td class="alignright">{% trans '购物车总计:' %}</td>
+                                <td class="alignright">{{ order.basket_total_incl_tax|currency:order.currency }}</td>
+                            </tr>
+                            <tr class="total">
+                                <td class="alignright" width="80%">{% trans '订单总计:' %}</td>
+                                <td class="alignright">{{ order.total_incl_tax|currency:order.currency }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody></table>
+    </td>
+</tr>
+
+{% if status_url %}
+    <tr>
+        <td class="content-block">
+            {% blocktrans %}您可以点击此链接来查看您的订单状态<a href="{{ status_url }}" title="order status">点击查看</a>{% endblocktrans %}
+        </td>
+    </tr>
+{% endif %}
+
+{% endblock %}

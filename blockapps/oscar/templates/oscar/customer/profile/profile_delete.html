@@ -1,0 +1,20 @@
+{% extends "customer/baseaccountpage.html" %}
+{% load i18n %}
+
+{% block tabcontent %}
+    <p>{% trans "请输入您的密码" %}</p>
+    <form id="delete_profile_form" action="." method="post" class="form-horizontal">
+        {% csrf_token %}
+        {% include "partials/form_fields.html" %}
+        <div class="alert alert-warning">
+            <h3>{% trans "提醒" %}</h3>
+            {% blocktrans %}
+                本次操作将从网站删除您的账号。账号一旦删除将不可撤销。
+            {% endblocktrans %}
+        </div>
+        <div class="form-group">
+            <button class="btn btn-lg btn-danger" type="submit" data-loading-text="{% trans 'Deleting...' %}">{% trans "删除" %}</button>
+            {% trans "或" %} <a href="{% url "customer:profile-view" %}">{% trans "取消" %}</a>.
+        </div>
+    </form>
+{% endblock tabcontent %}

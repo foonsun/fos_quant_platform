@@ -1,0 +1,261 @@
+{% extends "layout_semantic.html" %}
+{% load i18n %}
+
+{% block header %}{% endblock %}
+{% block title %} 更新对敲策略 {% endblock %}
+
+{% block column_left %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="ui basic segment">
+<div class="ui stackable very relaxed grid container">
+<div class="six wide centered column">
+  <h4>请配置您的对敲策略参数：</h4>
+<form method="post" class="ui form" action="">
+	{% csrf_token %}
+	{{ form.non_field_errors }}
+    <div class="required field">
+      <label for="{{ form.exchange.id_for_label }}"> {{ form.exchange.label }}</label>
+      <div class="ui fluid search selection dropdown">
+      <input type="hidden" name="{{ form.exchange.name }}" value="{{ form.exchange.value }}">
+      <i class="dropdown icon"></i>
+      <input class="search" autocomplete="on" tabindex="0">
+      <div class="default text">{% if form.exchange.value %} {% for value,display in form.fields.exchange.choices %}
+      		{% if value == form.exchange.value %}
+      		{{ display }}
+      		{% endif %} 
+      		{% endfor %} 
+      		{% else %}
+      		请选择一家交易所
+      		{% endif %}</div>
+      <div class="menu">
+      	{% for value,display in form.fields.exchange.choices %}
+      		{% if not value and form.exchange.value %}
+      		{% else %}	
+      		<div data-value="{{ value }}" {% if form.exchange.value == value %} class="active item selected" {% else %} class="item"  {% endif %}> {{ display }}</div>
+      		{% endif %}
+      	{% endfor %}
+        <!--  <div class="item" data-value="huobipro">火币pro</div> -->
+      </div>
+    </div>
+    </div>
+   
+    <div class="required field">
+      <label for="{{ form.accesskey.id_for_label }}">{{ form.accesskey.label }}</label>
+      <input type="text" name="{{ form.accesskey.name }}" placeholder="请输入对应交易所的access key" value="{% if form.accesskey.value %}{{ form.accesskey.value }}{% endif %}">
+    </div>
+
+    <div class="required field">
+      <label  for="{{ form.secretkey.id_for_label }}">{{ form.secretkey.label }}</label>
+      <input type="text" name="{{ form.secretkey.name }}" placeholder="请输入对应交易所的secret key" value="{% if form.secretkey.value %}{{ form.secretkey.value }}{% endif %}">
+    </div>
+
+    <div class="required field">
+      <label  for="{{ form.symbol.id_for_label }}">{{ form.symbol.label }}</label>
+      <div class="ui fluid search selection dropdown">
+      <input type="hidden" name="{{ form.symbol.name }}" value='{{ form.symbol.value }}'>
+      <i class="dropdown icon"></i>
+      <input class="search" autocomplete="on" tabindex="0">
+      <div class="text">
+      		{% if form.symbol.value %} {% for value,display in form.fields.symbol.choices %}
+      		{% if value == form.symbol.value %}
+      		{{ display }}
+      		{% endif %} 
+      		{% endfor %} 
+      		{% else %}
+      		请选择一个交易对
+      		{% endif %}
+      		</div>
+      <div class="menu">
+      	{% for value,display in form.fields.symbol.choices %}
+      		{% if not value and form.symbol.value %}
+      		{% else %}	
+      		<div data-value="{{ value }}" {% if form.symbol.value == value %} class="active selected item" {% else %} class="item" {% endif %}> {{ display }}</div>
+      		{% endif %}
+      	{% endfor %}
+        <!--  <div class="item" data-value="huobipro">火币pro</div> -->
+      </div>
+    </div>
+    </div>
+
+    <div class="required field">
+      <label  for="{{ form.max_buy_price.id_for_label }}">{{ form.max_buy_price.label }}</label>
+      <input type="text" name="max_buy_price" placeholder="请输入该交易对的最高买入价格，高于此价格将不买入" value="{% if form.max_buy_price.value %}{{ form.max_buy_price.value }}{% endif %}">
+    </div>
+
+
+    <div class="required field">
+      <label  for="{{ form.min_sell_price.id_for_label }}">{{ form.min_sell_price.label }}</label>
+      <input type="text" name="min_sell_price" placeholder="请输入该交易对的最低卖出价格，低于此价格将不卖出" value="{% if form.min_sell_price.value %}{{ form.min_sell_price.value }}{% endif %}">
+    </div>
+
+  <div class="required field">
+      <label  for="{{ form.base_volume.id_for_label }}">{{ form.base_volume.label }}</label>
+      <input type="text" name="base_volume" placeholder="如要刷BTC/USDT，那么就是每次要买卖的BTC的数量" value="{% if form.base_volume.value %}{{ form.base_volume.value }}{% endif %}">
+    </div>
+
+    <div class="required field">
+      <label>开始运行时间</label>
+      <div class="ui calendar inline">
+        <div class="ui small input icon left" id="start_time">
+              <i class="calendar icon"></i>
+              <input type="text" name="start_time" placeholder="请输入您的策略开始运行时间" value="{% if form.start_time.value %}{{ form.start_time.value }}{% endif %}">
+        </div>
+      </div>
+    </div>
+
+    <div class="required field">
+      <label>结束运行时间</label>
+      <div class="ui calendar inline">
+        <div class="ui small input icon left" id="end_time">
+              <i class="calendar icon"></i>
+              <input type="text" name="end_time" placeholder="请输入您的策略结束运行时间" value="{% if form.end_time.value %}{{ form.end_time.value }}{% endif %}">
+        </div>
+      </div>
+    </div>
+
+
+    <input type="submit" class="ui submit button" value="更新">
+    <div class="ui error message">
+        </div>
+</form>
+</div>
+</div>
+</div>
+
+{% endblock %}
+
+{% block formscripts %}
+<script type="text/javascript">
+  function Appendzero(obj)
+    {
+        if(obj<10) return "0" +""+ obj;
+        else return obj;
+    }
+
+  $('.ui.dropdown')
+  .dropdown()
+  ;
+  $('.ui.checkbox')
+    .checkbox()
+  ;
+$('.ui.form')
+  .form({
+    fields: {
+      exchange: {
+        identifier: 'exchange',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : '请选择一个交易所，若没有请联系客服添加'
+          }
+        ]
+      },
+      accesskey: {
+        identifier: 'accesskey',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : '请输入您在该交易所的accesskey也就是publickey'
+          }
+        ]
+      },
+      secretkey: {
+        identifier: 'secretkey',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : '请输入您在该交易所的secretkey也就是privatekey'
+          }
+        ]
+      },
+      symbol: {
+        identifier: 'symbol',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : '请输入交易对，格式为BTC/USDT形式'
+          }
+        ]
+      },
+      max_buy_price: {
+        identifier: 'max_buy_price',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : '请设置该交易对最高买入价格,诸如:6410.00等，小数或者整数，请不要加单位'
+          }
+        ]
+      },
+      min_sell_price: {
+        identifier: 'min_sell_price',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : '请设置该交易对最低卖出价格,诸如:6410.00等，小数或者整数，请不要加单位'
+          }
+        ]
+      },
+      balance_percent: {
+        identifier: 'balance_percent',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : '请设置您要使用的资产比率，请提前设置好您的交易对保持足够的等价值资产，比率为两个货币的资产使用比率'
+          }
+        ]
+      },
+      start_time: {
+    	  identifier: 'start_time',
+    	  rules: [
+    		  {
+    		  type : 'empty',
+    		  prompt : '请配置您的策略开始运行时间'	  
+      		}
+      	]
+      },
+      end_time: {
+    	  identifier: 'end_time',
+    	  rules: [
+    		  {
+    			  type: 'empty',
+    			  prompt: '请配置您的策略结束运行时间'
+    		  }
+    	  ]
+      }
+
+    }
+  });
+
+  $('#start_time, #end_time').calendar({
+    type: "datetime",
+    ampm: false,
+    text: {
+      days: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+      months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+      monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      today: '今天',
+      now: '现在',
+      am: '上午',
+      pm: '下午'
+    },
+    formatter: {
+            datetime: function (date, settings) {
+                if (!date) return '';
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                var hour = date.getHours();
+                var minu = date.getMinutes();
+                return year + '-' + Appendzero(month) + '-' + Appendzero(day) + ' ' + Appendzero(hour) + ':' + Appendzero(minu);
+            }
+        },
+    },
+
+    );
+
+</script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans '登录或者注册会员' %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{{ homepage_url }}">{% trans '首页' %}</a>
+        </li>
+        <li class="active">{% trans '登录/注册' %}</li>
+    </ul>
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-6 login_form">
+            <form id="login_form" action="{{ request.get_full_path }}" method="post" class="well" >
+                <h2>{% trans '登录会员' %}</h2>
+                {% csrf_token %}
+                {% include "partials/form_fields.html" with form=login_form %}
+                <p><a href="{% url 'password-reset' %}">{% trans "忘记密码" %}</a></p>
+                <button name="login_submit" type="submit" value="Log In" class="btn btn-lg btn-primary" data-loading-text="{% trans "Logging in..." %}">{% trans '登录' %}</button>
+            </form>
+        </div>
+        <div class="col-sm-6 register_form">
+            <form id="register_form" action="{{ request.get_full_path }}" method="post" class="well">
+                <h2>{% trans '注册会员' %}</h2>
+                {% csrf_token %}
+                {% include "partials/form_fields.html" with form=registration_form %}
+                <button name="registration_submit" type="submit" value="Register" class="btn btn-lg btn-primary" data-loading-text="{% trans 'Registering...' %}">{% trans '注册' %}</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,90 @@
+{% extends "layout_semantic.html" %}
+{% load i18n %}
+
+{% block header %}{% endblock %}
+{% block title %}量化策略列表 {% endblock %}
+
+{% block column_left %}
+{% endblock %}
+
+
+{% block content %}
+<div class="ui basic segment">
+  <div class="ui container">
+    <h4 class="ui header">1、您的所有对敲策略列表：</h4>
+       <!--  <div class="ui labeled button" tabindex="0">
+        <div class="ui blue button">充值</div>
+      </div> -->
+ <table class="ui celled striped table">
+  <thead>
+    <tr><th>
+     创建时间
+    </th>
+  <th>
+     交易所 
+    </th>
+  <th>
+     交易对
+    </th>
+  <th>
+    开始运行时间 
+    </th>
+  <th>
+  	结束运行时间
+  </th>
+  <th>
+  	运行状态
+  </th>
+  <!-- <th>
+  监控
+  </th> -->
+  <th>
+     操作 
+  </th>
+  </tr></thead>
+<tbody>     
+   {% if duiqiao_list %}
+ {% for duiqiao in duiqiao_list%}
+    <tr>
+      <td class="collapsing">
+        <i class="folder icon"></i> {{ duiqiao.create_time |date:'Y-m-d H:i' }}
+      </td>
+      <td>{{ duiqiao.exchange }}</td>
+      <td>{{ duiqiao.symbol }}</td>
+      <td>{{ duiqiao.start_time |date:'Y-m-d H:i' }} </td>
+      <td> {{ duiqiao.end_time |date:'Y-m-d H:i' }} </td>
+      <td> {{ duiqiao.status }}</td>
+      <!--  <td> <div class="ui yellow button">查看日志</div> </td> -->
+      <td>
+      	<!-- <div class="ui red button">停止运行</div> -->
+        <a href="{% url 'manage_getduiqiao' pk=duiqiao.id %}" class='ui green button'>查看详情</a>
+      </td>
+    </tr>
+   {% endfor %}
+  </tbody>
+ <tfoot>
+{% if is_paginated %}
+<div class="ui right floated pagination menu">
+        <a class="icon item">
+          <i class="left chevron icon"></i>
+        </a>
+        {% if page_obj.has_previous %}
+        <a class="item" href="{% url 'manage_getduiqiaolist' %}?page={{ page_obj.previous_page_number }}">上一页</a>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <a class="item" href="{% url 'manage_getduiqiaolist' %}?page={{ page_obj.next_page_number }}">下一页</a>
+        {% endif %}
+        <a class ="item"> 第{{ page_obj.number }}页 ，共{{ page_obj.paginator.num_pages }}页</a>
+        <a class="icon item">
+          <i class="right chevron icon"></i>
+        </a>
+      </div>
+{% endif %}
+{% else %}
+<tr> no msg </tr>
+{% endif %}
+</tfoot>
+</table>
+</div>
+
+{% endblock content%}

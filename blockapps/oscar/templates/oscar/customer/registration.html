@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% load i18n %}
+
+{% block title %}
+    {% trans '注册会员' %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{{ homepage_url }}">{% trans '首页' %}</a>
+        </li>
+        <li class="active">{% trans '注册会员' %}</li>
+    </ul>
+{% endblock %}
+
+{% block headertext %}
+    {% trans "注册会员" %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-6 register_form">
+            <form id="register_form" action="." method="post" class="form-stacked">
+                {% csrf_token %}
+                {% include "partials/form_fields.html"  %}
+                <button name="registration_submit" type="submit" value="Register" class="btn btn-primary btn-lg" data-loading-text="{%trans 'Registering...' %}">{% trans '注册' %}</button>
+                {% if cancel_url %}
+                    {% trans "or" %} <a href="{{ cancel_url }}">{% trans "取消" %}</a>.
+                {% endif %}
+            </form>
+        </div>
+    </div>
+{% endblock content %}

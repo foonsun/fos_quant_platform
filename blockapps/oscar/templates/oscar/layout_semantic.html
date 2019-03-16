@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% load promotion_tags %}
+{% load staticfiles %}
+
+{% comment %}
+Keep the same header and footer as the standard layout template but override the 
+main content area to split it into a sidebar and a content block
+{% endcomment %}
+
+{% block extrastyles %}
+<link rel="stylesheet" type="text/css" class="ui" href="{{ STATIC_URL }}semanticui/semantic.css">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}semantic-ui-calendar/calendar.css">
+{% endblock %}
+
+{% block extrascripts %}
+	  <!--  semantic  -->
+  <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
+  <script src="{{ STATIC_URL }}semanticui/semantic.js"></script>
+  <script src="{{ STATIC_URL }}semanticui/app/docs.js"></script>
+  <script src="{{ STATIC_URL }}semanticui/app/handlers.js"></script>
+  <script src="{{ STATIC_URL }}semantic-ui-calendar/calendar.js"></script>
+  <script src="{{ STATIC_URL }}js/jquery.serialize-object.min.js"></script>
+    {% include "partials/extrascripts.html" %}
+    {{ block.super }}
+    {% block formscripts %} {% endblock %}
+{% endblock %}

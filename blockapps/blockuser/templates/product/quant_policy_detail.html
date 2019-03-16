@@ -1,0 +1,22 @@
+{% extends "product/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %} {{ quant_policy_detail.title }} {% endblock %}
+
+{% block base_content %}
+<div class="ui basic segment">
+  <div class="ui fluid raised very padded text container">
+    <h4 class="ui header">{{ quant_policy_detail.title }}</h4>
+       <!--  <div class="ui labeled button" tabindex="0">
+        <div class="ui blue button">充值</div>
+      </div> -->
+ <p>{{ quant_policy_detail.content }}</p>
+ <h4 class="ui header">支持交易所：</h4>
+ <p>{{ quant_policy_detail.exchanges }}</p>
+ <h4 class="ui header">价格：</h4>
+ <p>{{ quant_policy_detail.price }}元/月</p>
+
+</div>
+
+{% endblock %}

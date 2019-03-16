@@ -1,0 +1,74 @@
+{
+    "version": 1,
+    "disable_existing_loggers": false,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+        },
+        "simple": {
+            "format": "%(levelname)s %(message)s"
+        }
+    },
+    "filters": {
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue"
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+            "formatter": "simple"
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler"
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "/app/logs/pyexchanges/pyserver.log",
+            "formatter": "verbose",
+	    "maxBytes": 104857600,
+	    "backupCount": 30
+        },
+        "logfile_fcoin_auto_trade_log":{
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "/app/logs/fcoin/auto_trade.log",
+            "maxBytes": 104857600,
+            "backupCount": 30,
+            "formatter": "verbose"
+        },
+        "logfile_sync_orders":{
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "/app/logs/pyexchanges/sync_orders.log",
+            "maxBytes": 104857600,
+            "backupCount": 30,
+            "formatter": "verbose"
+        }
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "propagate": true
+        },
+        "django.request": {
+            "handlers": ["file","console"],
+            "level": "INFO",
+            "propagate": true
+        },
+        "fcoin_auto_trade_log": {
+            "level": "INFO",
+            "handlers": ["console", "logfile_fcoin_auto_trade_log"],
+            "propagate": true
+        },
+        "sync_orders_log": {
+        	"levle": "INFO",
+        	"handlers": ["console", "logfile_sync_orders"],
+        	"propagate": true
+        }
+   }
+}

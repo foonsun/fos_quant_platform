@@ -1,0 +1,29 @@
+{% extends "customer/emails/base.html" %}
+{% load i18n %}
+
+{% block tbody %}
+<tr>
+    <td class="content-block">
+         {% blocktrans with email=new_email %}您收到这封邮件是因为您的邮箱地址已经被更改为<strong>{{ email }}</strong>.{% endblocktrans %}
+    </td>
+</tr>
+
+<tr>
+    <td class="content-block">
+        {% trans "如果不是您更改的邮箱地址，请立即重置您的密码并且更改您的邮箱地址" %}
+    </td>
+</tr>
+
+<tr>
+    <td class="content-block">
+        <a href="http://{{ site.domain }}{{ reset_url }}" class="btn-primary">重置密码</a>
+    </td>
+</tr>
+
+<tr>
+    <td class="content-block">
+        {% trans "如果是您更改了邮件地址,您可以忽略这个邮件" %}
+    </td>
+</tr>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+    backend:
+        restart: always
+        build:
+            context: .
+            dockerfile: ./docker/backend/Dockerfile
+        volumes:
+            - .:/app
+        environment:
+            DATABASE_URL: mysql
+            DATABASE_NAME: quant
+            DATABASE_USER: quant
+            DATABASE_PASS: quant001@
+            DATABASE_PORT: 3306
+            REDIS_URL: redis
+            BROKER_URL: rabbitmq

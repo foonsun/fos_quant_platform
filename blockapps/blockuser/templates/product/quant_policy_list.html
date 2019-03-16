@@ -1,0 +1,75 @@
+{% extends "product/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %} 量化策略列表 {% endblock %}
+
+{% block base_content %}
+<div class="ui basic segment">
+  <div class="ui container">
+    <h4 class="ui header">1、量化策略列表</h4>
+       <!--  <div class="ui labeled button" tabindex="0">
+        <div class="ui blue button">充值</div>
+      </div> -->
+      <table class="ui celled striped table">
+  <thead>
+    <tr><th>
+      名称
+    </th>
+  <th>
+     支持交易所 
+    </th>
+  <th>
+     最后更新时间
+    </th>
+  <th>
+     价格 
+    </th>
+ <th>
+     操作 
+    </th>
+  </tr></thead>
+ <tbody>
+ {% if quant_policy_list %}
+ {% for quant in quant_policy_list%}
+    <tr>
+      <td class="collapsing">
+        <i class="folder icon"></i> <a href="{% url 'product_getquantdetail' pk=quant.id %}">{{ quant.title }}</a>
+      </td>
+      <td>{{ quant.exchanges }}</td>
+      <td>{{ quant.update_time }}</td>
+      <td> {{ quant.price }}元/月</td>
+      <td>
+       <div class="ui green button">购买</div>
+      </td>
+    </tr>
+   {% endfor %}
+
+  </tbody>
+ <tfoot>
+{% if is_paginated %}
+<div class="ui right floated pagination menu">
+        <a class="icon item">
+          <i class="left chevron icon"></i>
+        </a>
+        {% if page_obj.has_previous %}
+        <a class="item" href="{% url 'product_getquantlist' %}?page={{ page_obj.previous_page_number }}">上一页</a>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <a class="item" href="{% url 'product_getquantlist' %}?page={{ page_obj.next_page_number }}">下一页</a>
+        {% endif %}
+        <a class ="item"> 第{{ page_obj.number }}页 ，共{{ page_obj.paginator.num_pages }}页</a>
+        <a class="icon item">
+          <i class="right chevron icon"></i>
+        </a>
+      </div>
+{% endif %}
+{% else %}
+<tr> no msg </tr>
+{% endif %}
+</tfoot>
+</table>
+</div>
+
+
+{% endblock %}

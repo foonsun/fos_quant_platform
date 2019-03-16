@@ -1,0 +1,28 @@
+language: python
+sudo: false
+
+matrix:
+  include:
+    - python: 2.7
+      env: TOXENV=py27-django111
+    - python: 3.5
+      env: TOXENV=py35-django111
+    - python: 3.6
+      env: TOXENV=py36-django111
+    - python: 3.5
+      env: TOXENV=py35-django2
+    - python: 3.6
+      env: TOXENV=py36-django2
+
+    - python: 3.6
+      env: TOXENV=lint
+
+install:
+    - pip install tox codecov
+
+script:
+    - tox
+
+after_success:
+  - tox -e coverage-report
+  - codecov

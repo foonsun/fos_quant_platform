@@ -1,0 +1,151 @@
+{% extends "layout_semantic.html" %}
+{% load i18n %}
+
+{% block header %}{% endblock %}
+{% block title %}该策略详情 {% endblock %}
+
+{% block column_left %}
+{% endblock %}
+
+
+{% block content %}
+<div class="ui basic segment">
+  <div class="ui container">
+    <h4 class="ui header">1、您的本次策略详情：</h4>
+       <!--  <div class="ui labeled button" tabindex="0">
+        <div class="ui blue button">充值</div>
+      </div> -->
+ <table class="ui celled striped table">
+  <thead>
+    <tr><th>
+     创建时间
+    </th>
+  <th>
+     交易所 
+    </th>
+  <th>
+     交易对
+    </th>
+  <th>
+    开始运行时间 
+    </th>
+  <th>
+  	结束运行时间
+  </th>
+  <th>
+  	运行状态
+  </th>
+  <th>
+   	资产使用百分比 
+  </th>
+  <th>
+  最后更新时间
+  </th>
+  </tr></thead>
+<tbody>     
+   {% if duiqiao_detail %}
+    <tr>
+      <td class="collapsing">
+        <i class="folder icon"></i> {{ duiqiao_detail.create_time |date:'Y-m-d H:i' }}
+      </td>
+      <td>{{ duiqiao_detail.exchange }}</td>
+      <td>{{ duiqiao_detail.symbol }}</td>
+      <td>{{ duiqiao_detail.start_time |date:'Y-m-d H:i' }} </td>
+      <td> {{ duiqiao_detail.end_time |date:'Y-m-d H:i'}} </td>
+      <td> {{ duiqiao_detail.status }}</td>
+      <td> {{ duiqiao_detail.percent_balance }} </td>
+      <td> {{ duiqiao_detail.update_time |date:'Y-m-d H:i'}} </td>
+    </tr>
+  </tbody>
+ <tfoot>
+{% else %}
+<tr> no msg </tr>
+{% endif %}
+</tfoot>
+</table>
+</div>
+
+<div class="ui basic segment">
+  <div class="ui container">
+    <h4 class="ui header">2、您可以对此策略进行如下操作：</h4>
+       <!--  <div class="ui labeled button" tabindex="0">
+        <div class="ui blue button">充值</div>
+      </div> -->
+ <table class="ui celled striped table">
+  <thead>
+    <tr><th>
+     操作
+    </th>
+  </tr></thead>
+<tbody>     
+   {% if duiqiao_detail %}
+    <tr>
+      <td>
+      	<div class="ui red button">停止运行</div>
+        <!--  <div class="ui yellow button">监控日志</div> -->
+        <a href="{% url 'manage_updateduiqiao' pk=duiqiao_detail.id %}" class="ui green button">更改策略</a>
+        <a href="{% url 'manage_deleteduiqiao' pk=duiqiao_detail.id %}" class='ui green button'>删除策略</a>
+      </td>
+    </tr>
+  </tbody>
+ <tfoot>
+{% else %}
+<tr> no msg </tr>
+{% endif %}
+</tfoot>
+</table>
+</div>
+</div>
+
+<div class="ui basic segment">
+<div class="ui container">
+<h4 class="ui header">3、实时监控日志：</h4>
+<div class="table-responsive">
+<table class="table card-table table-striped table-vcenter">
+<thead>
+<th>时间</th>
+<th>日志</th>
+</thead>
+<tbody id='output_append'>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+{% endblock %}
+ 
+ 
+{% block formscripts %}
+<script>
+$(document).ready(function () {
+    CreateWebSocket();
+});
+
+function CreateWebSocket() {
+    var logSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/log/duiqiao/');
+
+    logSocket.onmessage = function(e) {
+    	console.log(e);
+        var data = JSON.parse(e.data);
+        var message = data['message'];
+        console.log(message);
+        var policy_id = {{ duiqiao_detail.id }};
+        console.log(policy_id);
+        if(message['policy_id'] == policy_id){
+			var start_time = message['data']['start_time'];
+			var username = message['data']['username'];
+			var output_html = '<tr><td>' + start_time + '</td><td>' + policy_id + '</td></tr>';
+			$("#output_append").prepend(output_html);
+        }
+    };
+
+    logSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+}
+</script>
+
+{% endblock %}

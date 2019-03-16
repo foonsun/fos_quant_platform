@@ -1,0 +1,3 @@
+include *.md
+include LICENSE
+recursive-include src/oscar_accounts/templates *.html

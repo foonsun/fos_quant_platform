@@ -1,0 +1,19 @@
+*.pyc
+*.sw[po]
+
+# Packaging
+dist/*
+build/*
+*.egg-info
+.eggs
+
+# Sandbox
+sandbox/db.sqlite
+sandbox/assets
+settings_local.py
+
+# Testing
+.coverage
+.tox
+.cache
+.pytest_cache

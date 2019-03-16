@@ -1,0 +1,17 @@
+{% load i18n %}
+{% load display_tags %}
+
+<li{% if active_tab == 'profile' %} class="active"{% endif %}>
+    <a href="{% url 'customer:profile-view' %}">{% trans "账户资料" %}</a>
+</li>
+<li{% if active_tab == 'orders' %} class="active"{% endif %}>
+    <a href="{% url 'customer:order-list' %}">{% trans "订单" %}</a>
+</li>
+<li{% if active_tab == 'alerts' %} class="active"{% endif %}>
+    <a href="{% url 'customer:alerts-list' %}">{% trans "提醒" %}</a>
+</li>
+<!--  {% iffeature 'wishlists' %}
+    <li{% if active_tab == 'wishlists' %} class="active"{% endif %}>
+        <a href="{% url 'customer:wishlists-list' %}">{% trans "心愿清单" %}</a>
+    </li>
+{% endiffeature %} -->

@@ -1,0 +1,93 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Sign Up" %}</h1>
+
+<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+<form class="ui form" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+	{% for hidden_field in form.hidden_fields %}
+    	{{ hidden_field.errors }}
+    	{{ hidden_field }}
+  	{% endfor %}
+  	{% for field in form.visible_fields %}
+  		<div class="required field">
+  			{{ field.label_tag }}
+  			{{ field.errors }}
+      		{{ field }}
+      		{{ field.help_text }}
+  		</div>
+  	{% endfor %}
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <button type="submit" class="ui submit button">提交</button>
+    <div class="ui error message">
+        </div>
+</div>
+{% endblock %}
+{% block base_postscript %}
+<script type="text/javascript">
+  $('.ui.dropdown')
+  .dropdown()
+  ;
+  $('.ui.checkbox')
+    .checkbox()
+  ;
+$('.ui.form')
+  .form({
+    fields: {
+      name: {
+        identifier: 'name',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : '请输入您的用户名'
+          }
+        ]
+      },
+      email: {
+        identifier: 'email',
+        rules: [
+          {
+            type   : 'email',
+            prompt : '请输入您的邮箱地址'
+          }
+        ]
+      },
+      password1: {
+          identifier: 'password1',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : '请输入您的密码'
+            },
+            {
+              type   : 'minLength[6]',
+              prompt : '您的密码长度至少需要{ruleValue}个字符'
+            }
+          ]
+        },
+        password2: {
+          identifier: 'password2',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : '请输入您的密码'
+            },
+            {
+              type   : 'match[password1]',
+              prompt : '您两次输入的密码不一致，请重新输入密码'
+            }
+          ]
+        },
+    },
+  });
+
+</script>
+{% endblock %}

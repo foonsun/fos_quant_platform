@@ -1,0 +1,22 @@
+<div class="ui tiny basic buttons">
+    {% if pager.has_previous %}<a class="ui button" href="?page={{ pager.previous_page_number }}{% if pageargs %}{% for key, val in pageargs.items %}&{{ key }}={{ val }}{% endfor %}{% endif %}"><i class="left chevron icon"></i>上一页</a>
+    {% else %}<button class="ui disabled button"><i class="left chevron icon"></i>上一页</button>{% endif %}
+
+    {% for page_number in pager.pages %}
+    {% if page_number %}
+        {% ifequal page_number pager.pageNumber %}
+        <button class="ui active button">{{ page_number }}</button>
+        {% else %}
+        <a class="ui button" href="?page={{ page_number }}{% if pageargs %}{% for key, val in pageargs.items %}&{{ key }}={{ val }}{% endfor %}{% endif %}">{{ page_number }}</a>
+        {% endifequal %}
+    {% else %}
+        <button class="ui button">...</button>
+    {% endif %}
+    {% endfor %}
+    {% if pager.has_next %}<a class="ui button" href="?page={{ pager.next_page_number }}{% if pageargs %}{% for key, val in pageargs.items %}&{{ key }}={{ val }}{% endfor %}{% endif %}">下一页<i class="right chevron icon"></i></a>
+    {% else %}<button class="ui button">下一页<i class="right chevron icon"></i></button>
+    {% endif %}
+    <div class="ui label">
+      {{ pager.start_index }}-{{ pager.end_index }}/{{ pager.totalItemCount }}
+    </div>
+</div>

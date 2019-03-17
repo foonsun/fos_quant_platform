@@ -7,13 +7,13 @@ done
 
 source env.sh
 
-until cd /app/fieldkeys
-do
-	rm -f 1
-	rm -f meta
-	keyczart create --location=../fieldkeys --purpose=crypt
-	keyczart addkey --location=../fieldkeys --status=primary --size=256
-done
+#until cd /app/fieldkeys
+#do
+#	rm -f 1
+#	rm -f meta
+#	keyczart create --location=../fieldkeys --purpose=crypt
+#	keyczart addkey --location=../fieldkeys --status=primary --size=256
+#done
 
 until cd /app/blockserver
 do

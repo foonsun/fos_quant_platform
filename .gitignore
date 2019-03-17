@@ -111,3 +111,9 @@ venv.bak/
 *.key
 *.crt
 *.pid
+*.frm
+*.myd
+*.myi
+docker/mysql/data/
+docker/redis/data/
+fieldkeys/

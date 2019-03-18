@@ -3,15 +3,15 @@
 
 <p>
     {% if basket.is_empty %}
-        {% trans "Your basket is now empty" %}
+        {% trans "您的购物车为空" %}
     {% else %}
         {% if basket.is_tax_known %}
             {% blocktrans with total=basket.total_incl_tax|currency:basket.currency %}
-            Your basket total is now <strong>{{ total }}</strong>
+            您的购物车总额为： <strong>{{ total }}</strong>
             {% endblocktrans %}
         {% else %}
             {% blocktrans with total=basket.total_excl_tax|currency:basket.currency %}
-            Your basket total is now <strong>{{ total }}</strong>
+            您的购物车总额为：<strong>{{ total }}</strong>
             {% endblocktrans %}
         {% endif %}
     {% endif %}
@@ -19,7 +19,7 @@
 
 {% if include_buttons %}
 <p>
-    <a href="{% url 'basket:summary' %}" class="btn btn-info">{% trans "View basket" %}</a>
-    <a href="{% url 'checkout:index' %}" class="btn btn-info">{% trans "Checkout now" %}</a>
+    <a href="{% url 'basket:summary' %}" class="btn btn-info">{% trans "查看购物车" %}</a>
+    <a href="{% url 'checkout:index' %}" class="btn btn-info">{% trans "支付" %}</a>
 </p>
 {% endif %}

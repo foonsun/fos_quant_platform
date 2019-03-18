@@ -8,8 +8,8 @@ ProductReview = get_model('reviews', 'productreview')
 
 
 class ProductReviewForm(forms.ModelForm):
-    name = forms.CharField(label=_('Name'), required=True)
-    email = forms.EmailField(label=_('Email'), required=True)
+    name = forms.CharField(label=_('姓名'), required=True)
+    email = forms.EmailField(label=_('邮箱地址'), required=True)
 
     def __init__(self, product, user=None, *args, **kwargs):
         super().__init__(*args, **kwargs)

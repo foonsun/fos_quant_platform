@@ -27,13 +27,13 @@ class AbstractProductReview(models.Model):
 
     # Scores are between 0 and 5
     SCORE_CHOICES = tuple([(x, x) for x in range(0, 6)])
-    score = models.SmallIntegerField(_("Score"), choices=SCORE_CHOICES)
+    score = models.SmallIntegerField(_("评分"), choices=SCORE_CHOICES)
 
     title = models.CharField(
-        verbose_name=pgettext_lazy("Product review title", "Title"),
+        verbose_name=pgettext_lazy("Product review title", "标题"),
         max_length=255, validators=[validators.non_whitespace])
 
-    body = models.TextField(_("Body"))
+    body = models.TextField(_("内容"))
 
     # User information.
     user = models.ForeignKey(
@@ -45,24 +45,24 @@ class AbstractProductReview(models.Model):
 
     # Fields to be completed if user is anonymous
     name = models.CharField(
-        pgettext_lazy("Anonymous reviewer name", "Name"),
+        pgettext_lazy("Anonymous reviewer name", "名字"),
         max_length=255, blank=True)
-    email = models.EmailField(_("Email"), blank=True)
-    homepage = models.URLField(_("URL"), blank=True)
+    email = models.EmailField(_("邮箱地址"), blank=True)
+    homepage = models.URLField(_("网址"), blank=True)
 
     FOR_MODERATION, APPROVED, REJECTED = 0, 1, 2
     STATUS_CHOICES = (
-        (FOR_MODERATION, _("Requires moderation")),
-        (APPROVED, _("Approved")),
-        (REJECTED, _("Rejected")),
+        (FOR_MODERATION, _("需求修改")),
+        (APPROVED, _("批准")),
+        (REJECTED, _("拒绝")),
     )
 
     status = models.SmallIntegerField(
-        _("Status"), choices=STATUS_CHOICES, default=get_default_review_status)
+        _("状态"), choices=STATUS_CHOICES, default=get_default_review_status)
 
     # Denormalised vote totals
     total_votes = models.IntegerField(
-        _("Total Votes"), default=0)  # upvotes + down votes
+        _("所有的投票"), default=0)  # upvotes + down votes
     delta_votes = models.IntegerField(
         _("Delta Votes"), default=0, db_index=True)  # upvotes - down votes
 
@@ -76,8 +76,8 @@ class AbstractProductReview(models.Model):
         app_label = 'reviews'
         ordering = ['-delta_votes', 'id']
         unique_together = (('product', 'user'),)
-        verbose_name = _('Product review')
-        verbose_name_plural = _('Product reviews')
+        verbose_name = _('策略评论')
+        verbose_name_plural = _('策略评论')
 
     def get_absolute_url(self):
         kwargs = {
@@ -95,7 +95,7 @@ class AbstractProductReview(models.Model):
         self.body = self.body.strip()
         if not self.user and not (self.name and self.email):
             raise ValidationError(
-                _("Anonymous reviews must include a name and an email"))
+                _("未登陆用户的评论须包含用户名和有效的邮箱地址"))
 
     def vote_up(self, user):
         self.votes.create(user=user, delta=AbstractVote.UP)
@@ -148,7 +148,7 @@ class AbstractProductReview(models.Model):
     def reviewer_name(self):
         if self.user:
             name = self.user.get_full_name()
-            return name if name else _('anonymous')
+            return name if name else _('匿名用户')
         else:
             return self.name
 
@@ -170,7 +170,7 @@ class AbstractProductReview(models.Model):
         review
         """
         if not user.is_authenticated:
-            return False, _("Only signed in users can vote")
+            return False, _("只有登陆用户才能投票")
         vote = self.votes.model(review=self, user=user, delta=1)
         try:
             vote.full_clean()
@@ -223,7 +223,7 @@ class AbstractVote(models.Model):
         previous_votes = self.review.votes.filter(user=self.user)
         if len(previous_votes) > 0:
             raise ValidationError(_(
-                "You can only vote once on a review"))
+                "您只能评论一次"))
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

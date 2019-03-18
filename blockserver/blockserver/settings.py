@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     #'allauth.socialaccount.providers.twitter',
     #'allauth.socialaccount.providers.weibo',
     #'allauth.socialaccount.providers.weixin',
+    'compressor',
 ] + get_core_apps()
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 INTERNAL_IPS = ['127.0.0.1', ]
@@ -553,7 +554,7 @@ OSCAR_DASHBOARD_NAVIGATION.append(
 OSCAR_ALLOW_ANON_CHECKOUT = False
 
 OSCAR_SHOP_NAME = 'Fos_Quant_Platform'
-OSCAR_SHOP_TAGLINE = '数字货币量化策略平台'
+OSCAR_SHOP_TAGLINE = '数字货币量化策略实时运行平台'
 
 # Taken from PayPal's documentation - these should always work in the sandbo
 PAYPAL_CALLBACK_HTTPS = False
@@ -599,3 +600,8 @@ EMAIL_SUBJECT_PREFIX = SERVER_CONFIG['EMAIL_SUBJECT_PREFIX']
 #EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 OSCAR_FROM_EMAIL = SERVER_CONFIG['OSCAR_FROM_EMAIL']
+
+USE_LESS = False
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
+)

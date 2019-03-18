@@ -637,12 +637,12 @@ class AbstractLine(models.Model):
     # the basket.  This allows us to tell if a product has changed price since
     # a person first added it to their basket.
     price_currency = models.CharField(
-        _("Currency"), max_length=12, default=get_default_currency)
+        _("货币"), max_length=12, default=get_default_currency)
     price_excl_tax = models.DecimalField(
-        _('Price excl. Tax'), decimal_places=2, max_digits=12,
+        _('不含税价格'), decimal_places=2, max_digits=12,
         null=True)
     price_incl_tax = models.DecimalField(
-        _('Price incl. Tax'), decimal_places=2, max_digits=12, null=True)
+        _('含税价格'), decimal_places=2, max_digits=12, null=True)
 
     # Track date of first addition
     date_created = models.DateTimeField(_("Date Created"), auto_now_add=True)

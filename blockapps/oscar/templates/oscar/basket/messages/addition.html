@@ -2,7 +2,7 @@
 
 {% if quantity == 1 %}
     {% blocktrans with title=product.get_title %}
-    <strong>1个月的{{ title }}</strong>已经添加到您的购物车.
+    <strong>{{ title }}</strong>已经添加到您的购物车.
     {% endblocktrans %}
 {% else %}
     {% blocktrans with title=product.get_title quantity=quantity %}

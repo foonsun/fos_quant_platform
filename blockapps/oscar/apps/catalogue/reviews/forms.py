@@ -48,13 +48,13 @@ class SortReviewsForm(forms.Form):
     SORT_BY_SCORE = 'score'
     SORT_BY_RECENCY = 'recency'
     SORT_REVIEWS_BY_CHOICES = (
-        (SORT_BY_SCORE, _('Score')),
-        (SORT_BY_RECENCY, _('Recency')),
+        (SORT_BY_SCORE, _('评分')),
+        (SORT_BY_RECENCY, _('最新')),
     )
 
     sort_by = forms.ChoiceField(
         choices=SORT_REVIEWS_BY_CHOICES,
-        label=_('Sort by'),
+        label=_('排序'),
         initial=SORT_BY_SCORE,
         required=False
     )

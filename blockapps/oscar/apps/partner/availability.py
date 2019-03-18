@@ -61,7 +61,7 @@ class Available(Base):
     be tracked and the product is always available to buy.
     """
     code = 'available'
-    message = _("已上架")
+    message = _("正常")
 
     def is_purchase_permitted(self, quantity):
         return True, ""

@@ -9,7 +9,7 @@
     {% include 'checkout/nav.html' with step=3 %}
 {% endblock %}
 
-{% block checkout_title %}{% trans "Enter payment details" %}{% endblock %}
+{% block checkout_title %}{% trans "支付方式" %}{% endblock %}
 
 {% block order_contents %}{% endblock %}
 {% block shipping_address %}{% endblock %}
@@ -18,8 +18,7 @@
 
 {% block payment_details %}
     {% block payment_details_content %}
-        <p>{% trans "payment details" %}</p>
-        <p>支付方式:{{ paymethod }}</p>
-        <a id="view_preview" href="{% url 'checkout:preview' %}" class="btn btn-primary btn-lg">{% trans "Continue" %}</a>
+        <p> {{ paymethod }}</p>
+        <a id="view_preview" href="{% url 'checkout:preview' %}" class="btn btn-primary btn-lg">{% trans "继续" %}</a>
     {% endblock payment_details_content %}
 {% endblock payment_details %}

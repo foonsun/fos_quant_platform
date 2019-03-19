@@ -17,3 +17,9 @@ class PassedSkipCondition(Exception):
     """
     def __init__(self, url):
         self.url = url
+
+#######################################################################################
+# RedirectSessionMixin未被恰当在view中调用
+#######################################################################################
+class NotInViewException(Exception):
+    '''Base Alipay Exception'''

@@ -26,6 +26,7 @@ RedirectRequired, UnableToTakePayment, PaymentError \
 UnableToPlaceOrder = get_class('order.exceptions', 'UnableToPlaceOrder')
 OrderPlacementMixin = get_class('checkout.mixins', 'OrderPlacementMixin')
 CheckoutSessionMixin = get_class('checkout.session', 'CheckoutSessionMixin')
+RedirectSessionMixin = get_class('checkout.mixins', 'RedirectSessionMixin')
 NoShippingRequired = get_class('shipping.methods', 'NoShippingRequired')
 Order = get_model('order', 'Order')
 ShippingAddress = get_model('order', 'ShippingAddress')
@@ -693,3 +694,52 @@ class ThankYouView(generic.DetailView):
             ctx['send_analytics_event'] = False
 
         return ctx
+
+#######################################################################################
+# 重写 PaymentMethodView 提供多种支付方法的选择,
+# 重写 PaymentDetailsView 支付细节在具体支付方法包(例如alipay)中实现
+#######################################################################################
+class MultiPaymentMethodView(PaymentMethodView):
+    template_name = 'checkout/payment_method.html'
+    def get(self, request, *args, **kwargs):
+        # By default we redirect straight onto the payment details view. Shops
+        # that require a choice of payment method may want to override this
+        # method to implement their specific logic.
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+
+from alipay.warrant.views import AlipayHandle
+from django.http import HttpResponseRedirect
+
+class MultiPaymentDetailsView(RedirectSessionMixin, PaymentDetailsView):
+    template_name = 'checkout/payment_details.html'
+    template_name_preview = 'checkout/preview.html'
+    paymentsource_name={
+        'alipay_warrant':"支付宝担保",
+        }
+    paymentsource_method={
+        'alipay_warrant':AlipayHandle
+    }
+    def get_context_data(self, **kwargs):
+        context=super(PaymentDetailsView,self).get_context_data(**kwargs)
+        context['paymethod']=self.paymentsource_name[self.get_paymethod()]
+        return context
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get('paymethod'):
+            self.save_paymethod(kwargs.get('paymethod'))
+            return HttpResponseRedirect('/checkout/preview')
+        return super(PaymentDetailsView,self).get(self,request, *args, **kwargs)
+    def handle_payment(self, order_number, order_total, **kwargs):
+        '''
+        处理支付请求
+        :param order_number:
+        :param total_incl_tax:
+        :param kwargs:
+        :return:
+        '''
+        self.set_order_number(order_number)
+        self.set_info()
+        paymethod=self.paymentsource_method[self.get_paymethod()]
+        paymethod(self,order_number, **kwargs)

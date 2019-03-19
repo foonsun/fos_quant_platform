@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'widget_tweaks',
     'channels',
+    'alipay',
     # ... include the providers you want to enable:
     #'allauth.socialaccount.providers.telegram',
     #'allauth.socialaccount.providers.coinbase',
@@ -341,7 +342,7 @@ INSTALLED_APPS.extend((
     'oscarapi',
     'rest_framework',
     'paypal',
-    'blockoscar',
+    #'blockoscar',
     'chat',
     'wslog',
     'sanjiao',
@@ -605,3 +606,5 @@ USE_LESS = False
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile} {outfile}'),
 )
+
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

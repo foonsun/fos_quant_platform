@@ -1,127 +1,25 @@
-{% extends 'checkout/checkout.html' %}
-{% load currency_filters %}
+{% extends "checkout/checkout.html" %}
 {% load i18n %}
-{% block order_contents %}
+
+{% block title %}
+    {% trans "Payment details" %} | {{ block.super }}
 {% endblock %}
+
+{% block checkout_nav %}
+    {% include 'checkout/nav.html' with step=3 %}
+{% endblock %}
+
+{% block checkout_title %}{% trans "Enter payment details" %}{% endblock %}
+
+{% block order_contents %}{% endblock %}
+{% block shipping_address %}{% endblock %}
+{% block shipping_method %}{% endblock %}
+{% block payment_method %}{% endblock %}
+
 {% block payment_details %}
-
-{% if to_allocate == 0 %}
-	<a href="{% url 'checkout:preview' %}" class="btn btn-primary btn-large">{% trans "Continue" %}</a>
-{% else %}
-
-{% if not allocation_form %}
-    {# 1. Initial load of page - show form to look up account if they are not blocked #}
-	{% if is_blocked %}
-		<p>{% trans "由于您频繁操作，暂时被锁定" %}</p>
-	{% else %}
-		{% if user_accounts %}
-			<h3>{% trans "选择您的账户" %}</h3>
-			<form action="." method="post">
-				{% csrf_token %}
-				<table class="table">
-					<thead>
-						<tr>
-							<th></th>
-							<th>{% trans "账户" %}</th>
-							<th>{% trans "余额" %}</th>
-						</tr>
-					</thead>
-					<tbody>
-					{% for account in user_accounts %}
-						<tr>
-							<td><input type="radio" name="code" value="{{ account.code }}"></td>
-							<td>{{ account.name }}</td>
-							<td>{{ account.balance|currency }}</td>
-						</tr>
-					{% endfor %}
-					</tbody>
-				</table>
-				<button type="submit" class="btn btn-primary" name="action" value="select_account">{% trans '选择账户' %}</button>
-			</form>
-		{% else %}
-
-		<h3>{% trans "查找账户" %}</h3>
-		<form action="." method="post">
-			{% csrf_token %}
-			<input type="hidden" name="action" value="select_account" />
-			{% include 'partials/form_fields.html' with form=account_form %}
-			<button type="submit" class="btn btn-primary">{% trans "检查余额" %}</button>
-		</form>
-		{% endif %}
-	{% endif %}
-{% else %}
-	{# 2. An account has been found - choose allocation #}
-	{% with account=allocation_form.account %}
-	<h3>{% trans "账户" %}</h3>
-	<table class="table">
-		<tr>
-			<th>{% trans "账户名" %}</th>
-			<td>{{ account.name }}</td>
-		</tr>
-		<!--  {% if account.description %}
-		<tr>
-			<th>{% trans "Description" %}</th>
-			<td>{{ account.description }}</td>
-		</tr>
-		{% endif %} -->
-		{% if account.end_date %}
-		<tr>
-			<th>{% trans "失效日期" %}</th>
-			<td>{{ account.end_date }}</td>
-		</tr>
-		{% endif %}
-		<tr>
-			<th>{% trans "余额" %}</th>
-			<td>{{ account.balance|currency }}</td>
-		</tr>
-	</table>
-	{% endwith %}
-	<h3>{% trans "选择支配金额" %}</h3>
-	<p>{% trans "订单总计" %} {% if order_total.is_tax_known %}{{ order_total.incl_tax|currency }}{% else %}{{ order_total.excl_tax|currency }}{% endif %}.</p>
-	<p>{% trans "该账户最大可支配金额" %} {{ allocation_form.max_allocation|currency }}.</p>
-	<form action="." method="post">
-		{% csrf_token %}
-		{# Include account form hidden #}
-		<div style="display:none">
-			{{ account_form.as_p }}
-		</div>
-		<input type="hidden" name="action" value="allocate" />
-		{% include 'partials/form_fields.html' with form=allocation_form %}
-		<button type="submit" class="btn btn-primary btn-large">{% trans "支配" %}</button>{% trans "or" %}
-		<a href="{% url 'checkout:payment-details' %}">{% trans "取消" %}</a>.
-	</form>
-{% endif %}
-
-{% if account_allocations %}
-	<h3>{% trans "支配项" %}</h2>
-	<form action="." method="post">
-		{% csrf_token %}
-		<input type="hidden" name="action" value="remove_allocation" />
-		<table id="" class="table">
-			<thead>
-				<tr>
-					<th>{% trans "账户CODE" %}</th>
-					<th>{% trans "支配金额" %}</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for code, amount in account_allocations.items %}
-					<tr>
-						<td>{{ code }}</td>
-						<td>{{ amount|currency }}</td>
-						<td>
-							<button type="submit" class="btn" name="remove_{{ code }}">{% trans "取消" %}</button>
-						</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</form>
-{% endif %}
-
-<p>{% trans "订单总计" %}: {% if order_total.is_tax_known %}{{ order_total.incl_tax|currency }}{% else %}{{ order_total.excl_tax|currency }}{% endif %}. {% trans "您所需要支付的金额:" %}
-	{{ to_allocate|currency }}</p>
-{% endif %}
-
-{% endblock %}
+    {% block payment_details_content %}
+        <p>{% trans "payment details" %}</p>
+        <p>支付方式:{{ paymethod }}</p>
+        <a id="view_preview" href="{% url 'checkout:preview' %}" class="btn btn-primary btn-lg">{% trans "Continue" %}</a>
+    {% endblock payment_details_content %}
+{% endblock payment_details %}

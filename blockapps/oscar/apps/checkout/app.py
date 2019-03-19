@@ -16,8 +16,8 @@ class CheckoutApplication(Application):
     user_address_delete_view = get_class('checkout.views',
                                          'UserAddressDeleteView')
     shipping_method_view = get_class('checkout.views', 'ShippingMethodView')
-    payment_method_view = get_class('checkout.views', 'PaymentMethodView')
-    payment_details_view = get_class('checkout.views', 'PaymentDetailsView')
+    payment_method_view = get_class('checkout.views', 'MultiPaymentMethodView')
+    payment_details_view = get_class('checkout.views', 'MultiPaymentDetailsView')
     thankyou_view = get_class('checkout.views', 'ThankYouView')
 
     def get_urls(self):
@@ -41,6 +41,10 @@ class CheckoutApplication(Application):
             # Payment views
             url(r'payment-method/$',
                 self.payment_method_view.as_view(), name='payment-method'),
+            
+            url(r'payment-details/(?P<paymethod>.+)',
+                self.payment_details_view.as_view(), name='payment-details-request'),
+            
             url(r'payment-details/$',
                 self.payment_details_view.as_view(), name='payment-details'),
 
@@ -59,6 +63,5 @@ class CheckoutApplication(Application):
         if pattern.name.startswith('user-address'):
             return login_required
         return None
-
 
 application = CheckoutApplication()

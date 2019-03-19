@@ -1,16 +1,16 @@
-{% extends "checkout/checkout.html" %}
+{% extends "oscar/checkout/checkout.html" %}
 {% load i18n %}
 
 {% block title %}
-    {% trans "订单预览" %} | {{ block.super }}
+    {% trans "Order preview" %} | {{ block.super }}
 {% endblock %}
 
 {% block checkout_nav %}
-    {% include 'checkout/nav.html' with step=4 %}
+    {% include 'oscar/checkout/nav.html' with step=4 %}
 {% endblock %}
 
 {% block checkout_title %}
-    {% trans "预览订单" %}
+    {% trans "Preview order" %}
 {% endblock %}
 
 {% block place_order %}
@@ -31,7 +31,7 @@
         <div class="form-group clearfix">
             <div class="row">
                 <div class="col-sm-3 col-sm-offset-9">
-                     <button id='place-order' type="submit" class="btn btn-primary btn-lg btn-block" data-loading-text="{% trans 'Submitting...' %}">{% trans "确认下单" %}</button>
+                     <button id='place-order' type="submit" class="btn btn-primary btn-lg btn-block" data-loading-text="{% trans 'Submitting...' %}">{% trans "Place order" %}</button>
                 </div>
             </div>
         </div>

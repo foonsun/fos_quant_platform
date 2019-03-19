@@ -19,8 +19,10 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
-#from oscar.app import application
+from oscar.app import application
 from oscar.views import handler403, handler404, handler500
+from oscar_accounts.dashboard.app import application as accounts_app
+from oscarapi.app import application as api
 
 admin.autodiscover()
 
@@ -28,8 +30,10 @@ urlpatterns = staticfiles_urlpatterns()
 urlpatterns += [
     url(r'^i18n/', include('django.conf.urls.i18n')),
     # Oscar's normal URLs
-    #url(r'^', application.urls),
-    url(r'', include('blockoscar.urls')),
+    url(r'^dashboard/accounts/', accounts_app.urls),
+    url(r'^', application.urls),
+    url(r'^api/', api.urls),
+    url(r'', include('alipay.warrant.urls')),
     url(r'', include('blockuser.urls')),
     url(r'', include('sanjiao.urls')),
     url(r'', include('duiqiao.urls')),

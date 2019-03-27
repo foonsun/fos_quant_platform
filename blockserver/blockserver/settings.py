@@ -346,7 +346,8 @@ INSTALLED_APPS.extend((
     'chat',
     'wslog',
     'sanjiao',
-    'duiqiao'
+    'duiqiao',
+    'payjs'
     ))
 SOCIALACCOUNT_PROVIDERS = {
     'github': {

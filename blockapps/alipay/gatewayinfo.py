@@ -17,10 +17,7 @@ from alipay.exceptions import TokenAuthorizationError
 from alipay.conf import *
 from django.http import HttpResponseRedirect, HttpResponse
 import urllib
-if six.PY3:
-    from urllib.parse import parse_qs, urlparse, unquote
-else:
-    from urlparse import parse_qs, urlparse, unquote
+from urllib.parse import parse_qs, urlparse, unquote
 
 try:
     from urllib import urlencode

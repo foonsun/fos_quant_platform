@@ -34,6 +34,7 @@ urlpatterns += [
     url(r'^', application.urls),
     url(r'^api/', api.urls),
     url(r'', include('alipay.warrant.urls')),
+    url(r'^weixinpay/', include('payjs.weixin.urls')),
     url(r'', include('blockuser.urls')),
     url(r'', include('sanjiao.urls')),
     url(r'', include('duiqiao.urls')),

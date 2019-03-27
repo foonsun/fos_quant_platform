@@ -710,6 +710,7 @@ class MultiPaymentMethodView(PaymentMethodView):
 
 
 from alipay.warrant.views import AlipayHandle
+from payjs.weixin.views import PayjsHandle
 from django.http import HttpResponseRedirect
 
 class MultiPaymentDetailsView(RedirectSessionMixin, PaymentDetailsView):
@@ -717,9 +718,11 @@ class MultiPaymentDetailsView(RedirectSessionMixin, PaymentDetailsView):
     template_name_preview = 'checkout/preview.html'
     paymentsource_name={
         'alipay_warrant':"支付宝担保",
+        'weixin_payjs': "微信支付",
         }
     paymentsource_method={
-        'alipay_warrant':AlipayHandle
+        'alipay_warrant':AlipayHandle,
+        'weixin_payjs': PayjsHandle,
     }
     def get_context_data(self, **kwargs):
         context=super(PaymentDetailsView,self).get_context_data(**kwargs)

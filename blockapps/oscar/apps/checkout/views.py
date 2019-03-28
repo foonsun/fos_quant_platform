@@ -574,9 +574,9 @@ class PaymentDetailsView(OrderPlacementMixin, generic.TemplateView):
 
         # We define a general error message for when an unanticipated payment
         # error occurs.
-        error_msg = _("A problem occurred while processing payment for this "
-                      "order - no payment has been taken.  Please "
-                      "contact customer services if this problem persists")
+        error_msg = _("支付出现问题:"
+                      "该订单没有支付成功,"
+                      "请联系客服或者重试支付!")
 
         signals.pre_payment.send_robust(sender=self, view=self)
 

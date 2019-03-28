@@ -6,9 +6,10 @@
 # 该接口对应的支付源类型为:TaoBao_Warrant,需要在source_type里面添加该源类型
 #######################################################################################
 from django.views.generic import RedirectView, View,TemplateView
-from alipay.conf import BASIC_PARAMS,BIZ_PARAMS,ALIPAY_KEY
+from payjs.conf import BASIC_PARAMS
 from django.utils import six
 import logging
+import json
 from payjs.gatewayinfo import Payjs
 from payjs.exceptions import *
 from django.conf import settings
@@ -69,12 +70,16 @@ def PayjsHandle(paymentview, order_number, **kwargs):
         'out_trade_no':order_number,
          }
     gateway_info={key:gateway_info[key] for key in gateway_info if gateway_info[key]!=None}
+    payjs.set_payjs()
     res = payjs.get_payjs().QRPay(**gateway_info)
-    if res.return_code:
-        qrcode = res.qrcode
-        print(qrcode)
-    else:  
+    result = json.loads(res.content)
+    if result['return_code']:
+        url = res.qrcode
+        print(url)
+        raise RedirectRequired(url)
+    else:
         print('get qrcode error')
+        raise PaymentError('支付网关错误，请重试')
 
 class ResponseView(PayjsSessionMixin,OrderPlacementMixin,View):
     '''

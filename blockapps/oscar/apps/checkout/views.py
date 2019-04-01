@@ -762,7 +762,8 @@ class MultiPaymentDetailsView(RedirectSessionMixin, PaymentDetailsView):
     def get(self, request, *args, **kwargs):
         if kwargs.get('paymethod'):
             self.save_paymethod(kwargs.get('paymethod'))
-            return HttpResponseRedirect('/checkout/preview')
+            if kwargs.get('paymethod') != 'oscar_account':
+                return HttpResponseRedirect('/checkout/preview')
         return super(PaymentDetailsView,self).get(self,request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):

@@ -609,3 +609,4 @@ COMPRESS_PRECOMPILERS = (
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+ACCOUNTS_UNIT_NAME = 'BQ码'

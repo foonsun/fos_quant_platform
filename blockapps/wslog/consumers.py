@@ -56,7 +56,7 @@ class LogConsumer(AsyncWebsocketConsumer):
         await self.accept()
         
     async def disconnect(self, close_code):
-        await self.channel_layer.discard(
+        await self.channel_layer.group_discard(
                 self.log_group_name,
                 self.channel_name
             )

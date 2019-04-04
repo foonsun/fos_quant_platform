@@ -4,6 +4,7 @@ aioredis==1.1.0
 alembic==0.9.9
 amqp==2.2.2
 appnope==0.1.0
+asgi_redis==1.4.3
 asgiref==2.3.2
 asn1crypto==0.24.0
 async-generator==1.9

@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         now = timezone.now()
-        orders = Order.objects.filter(date_placed__gte=now-timezone.timedelta(7))
+        orders = Order.objects.filter(date_placed__gte=now-timezone.timedelta(0, 1))
         for order in orders:
             log_sync_orders.info('order:%s' % (order.date_placed))
             date_placed = order.date_placed

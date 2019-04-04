@@ -39,8 +39,16 @@ services:
         command: 
             redis-server /usr/local/etc/redis/redis.conf
     rabbitmq:
-        image: rabbitmq:3.7-alpine
+        image: rabbitmq:3.6-management
         restart: unless-stopped
+        ports:
+            - "127.0.0.1:5672:5672"
+            - "15672:15672"
+        volumes:
+            - ./docker/rabbitmq/data:/var/lib/rabbitmq:rw
+            - ./docker/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
+            - ./docker/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+
     asgiserver:
         extends:
             file: docker-common.yml

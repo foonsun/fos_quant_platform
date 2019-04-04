@@ -42,7 +42,7 @@
       <input type="text" name="{{ form.secretkey.name }}" placeholder="请输入对应交易所的secret key" value="{% if form.secretkey.data %}{{ form.secretkey.data }}{% endif %}">
     </div>
 
-    <div class="required field">
+   <!--  <div class="required field">
       <label  for="{{ form.symbol.id_for_label }}">{{ form.symbol.label }}</label>
       <div class="ui fluid search selection dropdown">
       <input type="hidden" name="{{ form.symbol.name }}">
@@ -52,10 +52,16 @@
       	{% for value,display in form.fields.symbol.choices %}
       		<div class="item" data-value="{{ value }}" {% if form.symbol.value == value %} selected {% endif %}> {{ display }}</div>
       	{% endfor %}
-        <!--  <div class="item" data-value="huobipro">火币pro</div> -->
       </div>
     </div>
+    </div> -->
+
+<div class="required field">
+      <label  for="{{ form.symbol.id_for_label }}">{{ form.symbol.label }}</label>
+      <input type="text" name="symbol" placeholder="请输入交易对,格式为:BTC/USDT" value="{% if form.symbol.data %}{{ form.symbol.data }}{% endif %}">
     </div>
+
+
 
     <div class="required field">
       <label  for="{{ form.max_buy_price.id_for_label }}">{{ form.max_buy_price.label }}</label>

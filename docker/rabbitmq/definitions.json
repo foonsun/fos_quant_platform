@@ -1,0 +1,57 @@
+{
+  "rabbit_version": "3.6.5",
+  "users": [
+    {
+      "name": "quant",
+      "password_hash": "ytUIm0w94ROqSkthIyZBP6xxfzdHFQoB2D6aVUcNchoib6g3",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "quant",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "parameters": [],
+  "policies": [],
+  "queues": [
+    {
+      "name": "events-v1",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-ha-policy": "all"
+      }
+    }
+  ],
+  "exchanges": [],
+  "bindings": [
+    {
+      "source": "amq.direct",
+      "vhost": "/",
+      "destination": "events-v1",
+      "destination_type": "queue",
+      "routing_key": "logstash",
+      "arguments": {}
+    },
+    {
+      "source": "amq.direct",
+      "vhost": "/",
+      "destination": "events-v1",
+      "destination_type": "queue",
+      "routing_key": "v1",
+      "arguments": {}
+    }
+  ]
+}

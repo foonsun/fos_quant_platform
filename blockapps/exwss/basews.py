@@ -10,8 +10,6 @@ from .basedata import Ticker
 import websocket
 import json
 
-
-
 class CoinData:
     """
     symbols : [] 交易对列表

@@ -15,4 +15,6 @@ services:
             DATABASE_PASS: quant001@
             DATABASE_PORT: 3306
             REDIS_URL: redis
+            BROKER_USER: quant
+            BROKER_PASSWORD: quant001@
             BROKER_URL: rabbitmq

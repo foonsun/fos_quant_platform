@@ -446,8 +446,9 @@ BROKER_USER = os.environ.get('BROKER_USER', 'quant')
 BROKER_PASSWORD = os.environ.get('BROKER_PASSWORD', 'quant001@')
 BROKER_URL = os.environ.get('BROKER_URL', 'localhost')
 BROKER_PORT = os.environ.get('BROKER_PORT', '5672')
+REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', 'quant001@')
 REDIS_URL = os.environ.get('REDIS_URL', '127.0.0.1') # 'redis://redis:6379/0')
-REDIS_PORT = os.environ.get('REDIS_PORT', '6379') # 'redis://redis:6379/0')
+REDIS_PORT = os.environ.get('REDIS_PORT', '6378') # 'redis://redis:6379/0')
 
 
 if DOCKER_MODE:
@@ -474,7 +475,7 @@ if DOCKER_MODE:
     CACHES = {
         "default":{
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://%s:%s/0" % (REDIS_URL, REDIS_PORT),
+        "LOCATION": "redis://:{0}@{1}:{2}/0".format(REDIS_PASSWORD, REDIS_URL, REDIS_PORT),
         "OPTIONS": {
             "CLIENTS_CLASS": "django_redis.Client.DefaultClient",
             "CONNECTION_POOL_KWARGS":{"max_connections": 100}
@@ -496,7 +497,7 @@ CORS_ORIGIN_WHITELIST = ()
 CORS_ORIGIN_REGEX_WHITELIST = ()
 
 CELERY_BROKER_URL = 'amqp://{0}:{1}@{2}:{3}/'.format(BROKER_USER, BROKER_PASSWORD, BROKER_URL, BROKER_PORT)               # 指定 Broker
-CELERY_RESULT_BACKEND = 'redis://{0}:{1}/0'.format(REDIS_URL, REDIS_PORT)  # 指定 Backend
+CELERY_RESULT_BACKEND = 'redis://:{0}@{1}:{2}/0'.format(REDIS_PASSWORD, REDIS_URL, REDIS_PORT)  # 指定 Backend
 #CELERY_TIMEZONE='Asia/Shanghai'                     # 指定时区，默认是 UTC
 # CELERY_TIMEZONE='UTC'                             
 CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
@@ -584,7 +585,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [(REDIS_URL, REDIS_PORT)],
+            "hosts": [('redis://:{0}@{1}:{2}/0'.format(REDIS_PASSWORD, REDIS_URL, REDIS_PORT))],
         },
     },
 }

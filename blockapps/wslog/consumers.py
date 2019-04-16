@@ -96,3 +96,21 @@ class DuiqiaoLogConsumer(LogConsumer):
         await self.send(text_data=json.dumps({
                 'message': message
             }))
+class LimitbuyLogConsumer(LogConsumer):
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+        
+        await self.channel_layer.group_send(
+            self.log_group_name,
+            {
+                'type': 'limitbuy_message',
+                'message': message
+            }
+            )
+        
+    async def duiqiao_message(self, event):
+        message = event['message']
+        await self.send(text_data=json.dumps({
+                'message': message
+            }))

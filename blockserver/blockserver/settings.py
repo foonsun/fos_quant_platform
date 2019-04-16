@@ -347,7 +347,8 @@ INSTALLED_APPS.extend((
     'wslog',
     'sanjiao',
     'duiqiao',
-    'payjs'
+    'payjs',
+    'limitbuy'
     ))
 SOCIALACCOUNT_PROVIDERS = {
     'github': {

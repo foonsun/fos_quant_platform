@@ -1,0 +1,22 @@
+{% extends "layout_semantic.html" %}
+{% load i18n %}
+
+{% block header %}{% endblock %}
+{% block head_title %} 删除定时抢购策略 {% endblock %}
+
+{% block column_left %}
+{% endblock %}
+
+{% block content %}
+<div class="ui basic segment">
+<div class="ui stackable very relaxed grid container">
+<div class="six wide centered column">
+    	<form method="post" class="ui form" action="">
+    		{% csrf_token %}
+    		<h4>您是否确定要删除该策略?</h4>
+    	<input type="submit" class="ui submit green button"  value="确定" />
+		</form>
+</div>
+</div>
+</div>
+{% endblock %}

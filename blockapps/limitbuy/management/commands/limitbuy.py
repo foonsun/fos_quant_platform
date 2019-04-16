@@ -32,9 +32,9 @@ class Command(BaseCommand):
         max_buy_price = options['max_buy_price']
         min_sell_price = options['min_sell_price']
         limit_price = options['limit_price']
-        start_time = 0
-        nowtime = time.time()
+        start_time = 1555419000000
         while True:
+            nowtime = time.time()
             if int(nowtime*1000) > start_time - 20:
                 break
             time.sleep(0.05)

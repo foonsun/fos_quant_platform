@@ -1,4 +1,4 @@
-# An Open Source Digital Currency Quant Platform
+# A Digital Currency Quant Platform
 
 
 # Build

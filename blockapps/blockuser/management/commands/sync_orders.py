@@ -6,7 +6,7 @@ import logging
 from django.utils import timezone
 
 log_sync_orders = logging.getLogger('sync_orders_log')
-policy_url_map = {3: ['manage_addduiqiao','manage_getduiqiaolist']}
+policy_url_map = {3: ['manage_addduiqiao','manage_getduiqiaolist'],6:['manage_addlimitbuy', 'manage_getlimitbuylist']}
 class Command(BaseCommand):
     def add_arguments(self, parser):
         pass

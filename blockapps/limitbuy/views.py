@@ -49,7 +49,7 @@ class updateLimitBuyView(UpdateView):
     model = LimitbuyPolicy
     queryset = LimitbuyPolicy.objects.all()
     fields = ['exchange', 'accesskey', 'secretkey', 'symbol', 'max_buy_price',\
-               'min_sell_price', 'base_volume', 'start_time', 'end_time']
+               'min_sell_price', 'base_volume', 'limit_price', 'start_time', 'end_time']
 
 class deleteLimitBuyView(DeleteView):
     template_name = 'manage/limitbuy/limitbuy_delete_form.html'

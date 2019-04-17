@@ -6,6 +6,8 @@ from blockcomm.net.exceptions import Exc_LogicAssertException,\
     LogicErrorException, LogicAssertException
 from blockcomm.context import BaseContext
 from djcom.utils import get_client_ip, get_server_ip
+from channels.layers import get_channel_layer, channel_layers
+from asgiref.sync import async_to_sync
 
 '''
 Source Singleton 用于定义不同产品来源(source)逻辑实现单例，逻辑主要分两类实现：
@@ -95,3 +97,13 @@ class Context(BaseContext):
     def ServerContext(ctx, source):
         ctx = Context()
         return ctx
+
+def wslog(username, type, message):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        username,
+        {
+            'type': type,
+            'message': message,
+        }
+        )

@@ -9,6 +9,7 @@ from acom.utils.strutil import green, blue, red, dump
 import asyncio
 import uvloop
 from blockdjcom.decorators import monit_time
+from blockdjcom.basebusiness import wslog
 
 class LimitBuy(quantpolicy):
     
@@ -38,23 +39,29 @@ class LimitBuy(quantpolicy):
                 # load all markets from exchange
                 markets = exchange.load_markets()
                 # output all symbols
-                dump(green(id), 'has', len(exchange.symbols), 'symbols:', green(', '.join(exchange.symbols))) 
+                #dump(green(id), 'has', len(exchange.symbols), 'symbols:', green(', '.join(exchange.symbols))) 
                 # don't check balance for speed
                 if self.limit_price > self.max_buy_price or self.limit_price < self.min_sell_price:
                     return
                 else:
                     # begin duiqiao
                     results = self.limitbuy_async(self.limit_price)
+                    return results
             else:
                 dump('Exchange ' + (id) + ' not found')
+                return 'Exchange ' + (id) + ' not found'
         except ccxt.DDoSProtection as e:
             print(type(e).__name__, e.args, 'DDoS Protection (ignoring)')
+            return type(e).__name__ + e.args + 'DDoS Protection (ignoring)'
         except ccxt.RequestTimeout as e:
             print(type(e).__name__, e.args, 'Request Timeout (ignoring)')
+            return type(e).__name__ + e.args + 'Request Timeout (ignoring)'
         except ccxt.ExchangeNotAvailable as e:
             print(type(e).__name__, e.args, 'Exchange Not Available due to downtime or maintenance (ignoring)')
+            return type(e).__name__ + e.args + 'Exchange Not Available due to downtime or maintenance (ignoring)'
         except ccxt.AuthenticationError as e:
             print(type(e).__name__, e.args, 'Authentication Error (missing API keys, ignoring)')
+            return type(e).__name__ + e.args + 'Authentication Error (missing API keys, ignoring)'
  
     async def create_order(self, price, side):
         try:
@@ -64,6 +71,7 @@ class LimitBuy(quantpolicy):
                 response = self.instance.create_limit_buy_order(self.symbol, self.base_volume, price)
         except Exception as e:
             print('Failed to create order with', self.instance.id, type(e).__name__, str(e))
+            return 'Failed to create order with' + self.instance.id +  type(e).__name__ + str(e)
             response = None
         return response
  

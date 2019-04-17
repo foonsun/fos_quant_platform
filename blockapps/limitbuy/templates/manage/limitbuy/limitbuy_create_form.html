@@ -14,7 +14,7 @@
 <div class="ui stackable very relaxed grid container">
 <div class="six wide centered column">
   <h4>请配置您的定时抢购策略参数：</h4>
-<form method="post" class="ui form" action="{% url 'manage_limitbuy' %}">
+<form method="post" class="ui form" action="{% url 'manage_addlimitbuy' %}">
 	{% csrf_token %}
 	{{ form.non_field_errors }}
     <div class="required field">

@@ -38,6 +38,7 @@ urlpatterns += [
     url(r'', include('blockuser.urls')),
     url(r'', include('sanjiao.urls')),
     url(r'', include('duiqiao.urls')),
+    url(r'', include('limitbuy.urls')),
     url(r'^eBlockTst_admin123/', include(admin.site.urls)),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^captcha/', include('captcha.urls')),

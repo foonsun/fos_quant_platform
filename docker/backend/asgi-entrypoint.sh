@@ -26,7 +26,7 @@ do
     sleep 3
 done
 
-until echo y | ./manage.py makemigrations blockuser sanjiao duiqiao
+until echo y | ./manage.py makemigrations blockuser sanjiao duiqiao limitbuy
 do
     echo "Waiting for mysql ready..."
     sleep 3

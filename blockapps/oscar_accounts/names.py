@@ -36,4 +36,4 @@ DEFERRED_INCOME = "Deferred income"
 
 DEFERRED_INCOME_ACCOUNT_TYPES = getattr(
     settings, 'ACCOUNTS_DEFERRED_INCOME_ACCOUNT_TYPES',
-    ('Dashboard created accounts',))
+    ('Dashboard created accounts', 'Web'))

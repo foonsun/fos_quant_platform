@@ -1,5 +1,7 @@
 import logging
 
+from decimal import Decimal as D
+
 from django.conf import settings
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
@@ -9,9 +11,16 @@ from oscar.apps.customer.signals import user_registered
 from oscar.core.compat import get_user_model
 from oscar.core.loading import get_class, get_model
 
+from oscar_accounts import codes, exceptions, facade, names
+from oscar_accounts.api import errors
+
 User = get_user_model()
 CommunicationEventType = get_model('customer', 'CommunicationEventType')
 Dispatcher = get_class('customer.utils', 'Dispatcher')
+
+Account = get_model('oscar_accounts', 'Account')
+AccountType = get_model('oscar_accounts', 'AccountType')
+Transfer = get_model('oscar_accounts', 'Transfer')
 
 logger = logging.getLogger('oscar.customer')
 
@@ -46,7 +55,13 @@ class RegisterUserMixin(object):
         to).
         """
         user = form.save()
-
+    
+        account_type = AccountType.objects.get(name='Web') 
+        Account.objects.create(
+            account_type=account_type,
+            code=codes.generate(),
+            primary_user=user,
+        )
         # Raise signal robustly (we don't want exceptions to crash the request
         # handling).
         user_registered.send_robust(

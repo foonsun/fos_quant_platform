@@ -8,6 +8,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils.http import urlquote
 from django.utils.translation import gettext as _
 from django.views import generic
+from django import forms as dforms
 
 from oscar.core.loading import get_class, get_classes, get_model
 
@@ -46,6 +47,8 @@ Basket = get_model('basket', 'Basket')
 Email = get_model('customer', 'Email')
 Country = get_model('address', 'Country')
 CommunicationEventType = get_model('customer', 'CommunicationEventType')
+
+Account = get_model('oscar_accounts', 'Account')
 
 # Standard logger for checkout events
 logger = logging.getLogger('oscar.checkout')
@@ -748,35 +751,27 @@ class MultiPaymentDetailsView(RedirectSessionMixin, PaymentDetailsView):
 
             # Add accounts that are linked to this user
             if self.request.user.is_authenticated():
-                ctx['user_accounts'] = gateway.user_accounts(self.request.user)
-
-            # Add existing allocations to context
-            allocations = self.get_account_allocations()
-            ctx['account_allocations'] = allocations
-            order_total = ctx['order_total']
-            total_for_allocation = order_total.incl_tax if order_total.is_tax_known else order_total.excl_tax
-            ctx['to_allocate'] = total_for_allocation - allocations.total
-
+                ctx['user_accounts'] = gateway.user_accounts(self.request.user)[0]
+                code = ctx['user_accounts'].code
+                balance = ctx['user_accounts'].balance
+                order_total = ctx['order_total'].incl_tax if ctx['order_total'].is_tax_known else ctx['order_total'].excl_tax
+                if balance < order_total:
+                    self.store_allocation_in_session({'code': code, 'amount': balance})
+                else:
+                    self.store_allocation_in_session({'code': code, 'amount': order_total})
+                ctx['allocation_form'] = forms.AllocationForm(
+                    ctx['user_accounts'], self.request.basket,
+                    ctx['shipping_charge'].incl_tax if ctx['shipping_charge'].is_tax_known else ctx['shipping_charge'].excl_tax,
+                    order_total,
+                    self.get_account_allocations())
+            
         return ctx
 
     def get(self, request, *args, **kwargs):
         if kwargs.get('paymethod'):
             self.save_paymethod(kwargs.get('paymethod'))
-            if kwargs.get('paymethod') != 'oscar_account':
-                return HttpResponseRedirect('/checkout/preview')
+            return HttpResponseRedirect('/checkout/preview')
         return super(PaymentDetailsView,self).get(self,request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        # Intercept POST requests to look for attempts to allocate to an
-        # account, or remove an allocation.
-        action = self.request.POST.get('action', None)
-        if action == 'select_account':
-            return self.select_account(request)
-        elif action == 'allocate':
-            return self.add_allocation(request)
-        elif action == 'remove_allocation':
-            return self.remove_allocation(request)
-        return super(MultiPaymentDetailsView,self).post(request, *args, **kwargs)
 
     def handle_payment(self, order_number, order_total, **kwargs):
         '''
@@ -796,13 +791,13 @@ class MultiPaymentDetailsView(RedirectSessionMixin, PaymentDetailsView):
             allocations = self.get_account_allocations()
             if allocations.total != order_total.incl_tax:
                 raise UnableToTakePayment(
-                    "Your account allocations do not cover the order total")
+                    "您的账户余额不足，请充值！")
 
             try:
                 gateway.redeem(order_number, self.request.user, allocations)
             except act_exceptions.AccountException:
                 raise UnableToTakePayment(
-                    "An error occurred with the account redemption")
+                    "账户余额支付发生错误")
 
             # If we get here, payment was successful.  We record the payment
             # sources and event to complete the audit trail for this order
@@ -890,9 +885,11 @@ class MultiPaymentDetailsView(RedirectSessionMixin, PaymentDetailsView):
             messages.success(request, _("Allocation removed"))
         return http.HttpResponseRedirect(reverse('checkout:payment-details'))
 
-    def store_allocation_in_session(self, form):
+    def store_allocation_in_session(self, account):
         allocations = self.get_account_allocations()
-        allocations.add(form.account.code, form.cleaned_data['amount'])
+        if allocations.contains(account['code']):
+            allocations.remove(account['code'])
+        allocations.add(account['code'], account['amount'])
         self.set_account_allocations(allocations)
 
     # The below methods could be put onto a customised version of

@@ -18,12 +18,12 @@ class Command(BaseCommand):
         result = json.loads(response.content)
         txs = result['transactions'] 
         if len(txs) == 1:
-            message =  '1C3mL4rhNWukpxtJ4m4DPGo9kf5qeS1dTZ 没有转账记录 目前余额 {}'.format(txs[0]['amount']) 
+            message =  '监控地址无转账记录:1C3mL4rhNWukpxtJ4m4DPGo9kf5qeS1dTZ 目前余额 {}'.format(txs[0]['amount']) 
             send_mail(
-                     '1C3mL4rhNWukpxtJ4m4DPGo9kf5qeS1dTZ地址无异动',
+                     '提醒:监控钱包地址没有转账记录',
                       message,
-                     'helloeoswallet@gmail.com',
-                     ['andyjoe318@gmail.com', 'sarah_wang@polysands.com'],
+                     'bearquant@foxmail.com',
+                     ['sarah_wang@polysands.com'],
                      fail_silently=False,
                     )
         else:
@@ -31,7 +31,7 @@ class Command(BaseCommand):
             send_mail(
                      '警告：1C3mL4rhNWukpxtJ4m4DPGo9kf5qeS1dTZ地址发生转账',
                       message,
-                     'helloeoswallet@gmail.com',
+                     'bearquant@foxmail.com',
                      ['andyjoe318@gmail.com', 'sarah_wang@polysands.com'],
                      fail_silently=False,
                     )

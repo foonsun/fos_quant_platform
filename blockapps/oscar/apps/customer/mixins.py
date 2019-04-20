@@ -53,13 +53,14 @@ class RegisterUserMixin(object):
         """
         Create a user instance and send a new registration email (if configured
         to).
+        注册的同时给用户生成唯一的数字码，可以用来用户的转账等
         """
         user = form.save()
     
         account_type = AccountType.objects.get(name='Web') 
         Account.objects.create(
             account_type=account_type,
-            code=codes.generate(),
+            code=codes.generate(size=5),
             primary_user=user,
         )
         # Raise signal robustly (we don't want exceptions to crash the request

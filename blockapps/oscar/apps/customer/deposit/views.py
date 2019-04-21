@@ -16,6 +16,7 @@ class AccountDepositView(generic.TemplateView):
         context['address'] = settings.EOS_WALLET_ADDRESS
         useraccount = gateway.user_accounts(self.request.user)[0]
         context['tag'] = useraccount.code
+        context['balance'] = useraccount.balance
         return context
 
 class AccountDepositListView(PageTitleMixin, generic.ListView):

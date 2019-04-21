@@ -10,9 +10,15 @@
 {% endblock %}
 
 {% block tabcontent %}
+	<table class="table table-striped table-bordered">
+        <tr>
+            <th>{% trans '您的当前账户余额' %}</th>
+            <td>{{ balance }}元</td>
+        </tr>
+    </table>
     <table class="table table-striped table-bordered">
         <tr>
-            <th>{% trans '币种' %}</th>
+            <th>{% trans '充值币种' %}</th>
             <td>{{ source }}</td>
         </tr>
         <tr>
@@ -24,8 +30,8 @@
             <td>{{ tag }}</td>
         </tr>
         <tr>
-            <th>{% trans '提示' %}</th>
-            <td>请不要向以上地址充值非EOS的币种，否则无法到账，请务必填写以上标签备注，充币完成后一般1-5分钟内自动到账</td>
+            <th>{% trans '充值提示' %}</th>
+            <td>1、请不要向以上地址充值非EOS的币种，否则无法到账，2、请务必填写以上标签备注，充币完成后一般1-5分钟内自动到账,3、充币后会自动按照到账时间转换成对应汇率的人民币。4、充值一旦成功，不可撤回不可退款。</td>
         </tr>
     </table>
 {% endblock tabcontent %}

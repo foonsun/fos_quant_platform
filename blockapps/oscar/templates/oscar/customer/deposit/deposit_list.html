@@ -1,0 +1,36 @@
+{% extends "customer/baseaccountpage.html" %}
+{% load i18n %}
+
+{% block tabcontent %}
+    {% if deposit_lists %}
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>{% trans '日期' %}</th>
+                    <th>{% trans '币种' %}</th>
+                    <th>{% trans '数量' %}</th>
+                    <th>{% trans '到账时间' %}</th>
+                    <th>{% trans '折合RMB价格' %}</th>
+                    <th>{% trans '交易id' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for deposit in deposit_lists %}
+                    <tr>
+                    	<td> deposit.create_time </td>
+                    	<td> deposit.source </td>
+                    	<td> deposit.amount </td>
+                    	<td> deposit.block_time </td>
+                    	<td> deposit.price </td>
+                        <td>
+                            <a href="https://bloks.io/transaction/{{deposit.txid}}">{{ deposit.txid }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include "partials/pagination.html" %}
+    {% else %}
+        <p>{% trans '没有充值记录' %}</p>
+    {% endif %}
+{% endblock tabcontent %}

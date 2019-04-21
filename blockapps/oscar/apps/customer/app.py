@@ -68,6 +68,10 @@ class CustomerApplication(Application):
                                               'WishListRemoveProduct')
     wishlists_move_product_to_another_view = get_class(
         'customer.wishlists.views', 'WishListMoveProductToAnotherWishList')
+    
+    deposit_view = get_class('customer.deposit.views', 'AccountDepositView')
+    deposit_list_view = get_class('customer.deposit.views', 'AccountDepositListView')
+
 
     def get_urls(self):
         urls = [
@@ -91,6 +95,14 @@ class CustomerApplication(Application):
             url(r'^profile/delete/$',
                 login_required(self.profile_delete_view.as_view()),
                 name='profile-delete'),
+            
+            # deposit
+            url(r'^deposit/$',
+                login_required(self.deposit_view.as_view()),
+                name='deposit-view'),
+            url(r'^depositlist/$',
+                login_required(self.deposit_list_view.as_view()),
+                name='deposit-list'),
 
             # Order history
             url(r'^orders/$',

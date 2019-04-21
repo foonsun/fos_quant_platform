@@ -614,4 +614,5 @@ COMPRESS_PRECOMPILERS = (
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-ACCOUNTS_UNIT_NAME = 'BQ码'
+ACCOUNTS_UNIT_NAME = '余额'
+EOS_WALLET_ADDRESS = 'eosiodappdev'

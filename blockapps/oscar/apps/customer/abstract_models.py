@@ -434,3 +434,27 @@ class AbstractProductAlert(models.Model):
 
     def get_cancel_url(self):
         return reverse('customer:alerts-cancel-by-key', kwargs={'key': self.key})
+
+class AbstractDepositRecords(models.Model):
+    """
+    deposit records such as eos.
+    """
+    payaccount = models.CharField(_("来源账号"), max_length=255, default='')
+    memo = models.CharField(_("备注"), max_length=255, default='')
+    amount = models.DecimalField(_("充值数量"), max_digits=20, decimal_places=6, default=0)
+    txid = models.CharField(_("交易ID"), max_length=255, default='')
+    source = models.CharField(_("币种"), max_length=255, default='')
+    block_time = models.DateTimeField(_("区块时间"))
+    price = models.DecimalField(_("rmb价格"), max_digits=20, decimal_places=6, default=0)
+    createtime = models.DateTimeField(_("创建时间"), auto_now_add=True)
+    
+    class Meta:
+        abstract = True
+        app_label = 'customer'
+        ordering = ('-createtime',)
+        verbose_name = _('充值记录')
+        verbose_name_plural = _('充值记录')
+
+    def __str__(self):
+        return self.payaccount, self.memo, self.amount, self.source, self.block_time
+    

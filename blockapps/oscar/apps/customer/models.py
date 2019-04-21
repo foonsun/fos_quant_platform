@@ -31,3 +31,8 @@ if not is_model_registered('customer', 'ProductAlert'):
         pass
 
     __all__.append('ProductAlert')
+    
+if not is_model_registered('customer', 'AbstractDepositRecords'):
+    class AbstractDepositRecords(abstract_models.AbstractDepositRecords):
+        pass
+    __all__.append('AbstractDepositRecords')

@@ -18,10 +18,11 @@
 * 2、docker-compose up -d
 
 * 3、create the database and import the sql.
+```
    docker exec -ti fos_quant_platform_mysql_1 mysql -u root -p root
    create database quant;
    docker exec -i fos_quant_platform_mysql_1 mysql -uroot -proot quant < ./fos_quant_platform_mysql.sql
-
+```
 # Features:
 * support binance,huobi,okex,fcoin,bcex,kucoin,bigone,gate,zb,etc.
 * support realtime policy running log view.

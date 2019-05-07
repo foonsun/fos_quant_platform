@@ -27,6 +27,10 @@
 * support binance,huobi,okex,fcoin,bcex,kucoin,bigone,gate,zb,etc.
 * support realtime policy running log view.
 * support account management and account deposit by eos.
+* support adding and editing and deleting policy.
+* support configing the policy in the webpage.
+* support ordering the policy.
+etc.
 
 # Doc
   TBD.

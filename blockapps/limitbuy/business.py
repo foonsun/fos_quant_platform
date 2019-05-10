@@ -81,6 +81,9 @@ class LimitBuy(quantpolicy):
         asyncio.set_event_loop(loop)
         results = loop.run_until_complete(asyncio.gather(
             self.create_order(price, 'buy'),
+            self.create_order(price, 'buy'),
+            self.create_order(price, 'buy'),
+            self.create_order(price, 'buy'),
             self.create_order(price, 'buy')
             ))     
         return results

@@ -10,7 +10,7 @@
 	"EMAIL_USE_SSL": true,
 	"EMAIL_PORT": 465,
 	"EMAIL_HOST_USER": "bearquant@foxmail.com",
-	"EMAIL_HOST_PASSWORD": “xxx",
+	"EMAIL_HOST_PASSWORD": "xxx",
 	"EMAIL_SUBJECT_PREFIX": "BEARQUANT",
 	"OSCAR_FROM_EMAIL": "bearquant@foxmail.com"
   }

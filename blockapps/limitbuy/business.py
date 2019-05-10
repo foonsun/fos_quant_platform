@@ -87,3 +87,28 @@ class LimitBuy(quantpolicy):
             self.create_order(price, 'buy')
             ))     
         return results
+    
+    @monit_time
+    def limitsell(self, price, currency):
+        balances = self.instance.fetchBalance() 
+        balances_item = balances['info']['data']['list']
+        sell_amount = 0
+        for item in  balances_item:
+            if item['currency'].upper() == currency and item['type'] == 'trade':
+                sell_amount = item['balance']
+                break
+        # sell the currency amount 
+        if sell_amount == 0:
+            return
+        try:
+            response = self.instance.create_limit_sell_order(self.symbol, sell_amount, price)
+        except Exception as e:
+            print('Failed to create order with', self.instance.id, type(e).__name__, str(e))
+            return 'Failed to create order with' + self.instance.id +  type(e).__name__ + str(e)
+    @monit_time
+    def cancelorder(self):
+        orders = self.instance.fetchOpenOrders(self.symbol)
+        for order in orders:
+            orderid = order['info']['id']
+            self.instance.cancelOrder(orderid)
+            

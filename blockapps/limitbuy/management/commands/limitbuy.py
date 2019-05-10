@@ -35,14 +35,21 @@ class Command(BaseCommand):
         start_time = 1557406800000
         while True:
             nowtime = time.time()
-            if int(nowtime*1000) > start_time - 500:
+            if int(nowtime*1000) > start_time - 1000:
                 break
             time.sleep(0.05)
         while True:
             lasttime = time.time()
-            if int(lasttime) > int(nowtime) + 5: 
+            if int(lasttime) > int(nowtime) + 3: 
                 break
-            if int(lasttime) > int(nowtime) + 1: 
-                time.sleep(1)
             policy = LimitBuy(exchange, symbol, publickey, privatekey, max_buy_price, min_sell_price, base_volume, limit_price)
             policy.run()
+        currency = symbol.split('/')[0] 
+        sell_price = limit_price * 3
+        policy.cancelorder()
+        policy.limitsell(sell_price, currency)
+        time.sleep(2)
+        sell_price = limit_price * 2
+        policy.cancelorder()
+        policy.limitsell(sell_price, currency)
+        

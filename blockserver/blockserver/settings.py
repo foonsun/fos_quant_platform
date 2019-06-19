@@ -510,6 +510,11 @@ CELERY_DEFAULT_QUEUE = 'default'
 CELERY_DEFAULT_EXCHANGE = 'tasks'
 CELERY_DEFUALT_EXCHANGE_TYPE = 'topic'
 CELERY_DEFAULT_ROUTING_KEY = 'task.default'
+
+task_reject_on_worker_lost = True
+task_acks_late = True
+
+
 ENCRYPTED_FIELDS_KEYDIR = pathjoin(BASE_DIR, '..', 'fieldkeys') 
 
 OSCAR_INITIAL_ORDER_STATUS = 'Pending'

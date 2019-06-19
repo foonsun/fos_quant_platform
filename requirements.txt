@@ -69,7 +69,6 @@ djangorestframework==3.8.2
 dnspython==1.15.0
 docutils==0.14
 empyrical==0.2.1
-enigma-catalyst==0.5.15
 entrypoints==0.2.3
 eth-abi==1.1.1
 eth-account==0.2.2

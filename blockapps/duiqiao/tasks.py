@@ -21,7 +21,10 @@ def run_duiqiao_policy(policy_id):
     print(policy_id)
     channel_layer = get_channel_layer()
     while True:
-        policy = DuiQiaoPolicy.objects.get(id=policy_id)
+        try:
+            policy = DuiQiaoPolicy.objects.get(id=policy_id)
+        except:
+            return
         print(policy)
         username = policy.user.username
         exchange = policy.exchange
@@ -58,6 +61,10 @@ def run_duiqiao_policy(policy_id):
                 policy.status = RUN_STATUSS[2][0]
                 policy.save()
                 break
+            # 5分钟更新一下最后响应时间
+            if (policy.update_time - nowtime).total_seconds() > 5*60:
+                policy.update_time = nowtime
+                policy.save()
             #if policy.status == RUN_STATUSS[1][0]:
             #    break
             #else:

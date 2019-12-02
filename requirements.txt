@@ -65,7 +65,7 @@ django-tables2==1.21.2
 django-treebeard==4.3
 django-werkzeug-debugger-runserver==0.3.1
 django-widget-tweaks==1.4.2
-djangorestframework==3.8.2
+djangorestframework==3.9.1
 dnspython==1.15.0
 docutils==0.14
 empyrical==0.2.1

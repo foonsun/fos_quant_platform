@@ -116,7 +116,7 @@ kombu==4.2.1
 llvmlite==0.24.0
 Logbook==0.12.5
 lru-dict==1.1.6
-lxml==4.2.1
+lxml==4.6.2
 Mako==1.0.7
 MarkupSafe==1.0
 matplotlib==2.2.2

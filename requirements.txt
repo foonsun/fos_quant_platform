@@ -60,7 +60,7 @@ django-localflavor==2.1
 django-oscar-paypal==1.0.0
 django-phonenumber-field==2.0.0
 django-redis==4.9.0
-django-registration==2.4.1
+django-registration==3.1.2
 django-tables2==1.21.2
 django-treebeard==4.3
 django-werkzeug-debugger-runserver==0.3.1

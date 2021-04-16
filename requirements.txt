@@ -51,7 +51,7 @@ django-celery-beat==1.1.1
 django-celery-results==1.0.1
 django-compressor==2.2
 django-cors-headers==2.2.0
-django-debug-toolbar==1.9.1
+django-debug-toolbar==1.11.1
 django-encrypted-fields-python3==1.1.3
 django-extensions==2.1.2
 django-extra-views==0.11.0

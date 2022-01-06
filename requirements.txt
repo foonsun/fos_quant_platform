@@ -23,7 +23,7 @@ botocore==1.8.50
 Bottleneck==1.2.1
 cchardet==2.1.1
 ccxt==1.18.473
-celery==4.2.0
+celery==5.2.2
 certifi==2018.1.18
 cffi==1.11.5
 cfscrape==1.9.5

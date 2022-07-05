@@ -159,7 +159,7 @@ purl==1.4
 pyasn1==0.4.2
 pyasn1-modules==0.2.1
 PyAthena==1.2.5
-pycares==2.3.0
+pycares==4.2.0
 pycountry==18.5.26
 pycparser==2.18
 pycryptodome==3.6.6

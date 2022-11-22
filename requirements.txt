@@ -150,7 +150,7 @@ pexpect==4.5.0
 phonenumbers==8.9.10
 phonenumberslite==8.9.10
 pickleshare==0.7.4
-Pillow==6.2.0
+Pillow==9.3.0
 priority==1.3.0
 prometheus-client==0.2.0
 prompt-toolkit==1.0.15

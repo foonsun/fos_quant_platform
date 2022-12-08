@@ -24,7 +24,7 @@ Bottleneck==1.2.1
 cchardet==2.1.1
 ccxt==1.18.473
 celery==4.2.0
-certifi==2018.1.18
+certifi==2022.12.7
 cffi==1.11.5
 cfscrape==1.9.5
 channels==2.0.2

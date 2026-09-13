@@ -1,3 +1,5 @@
+
+
 # An Open Source Digital Currency Quant Platform
 
 # QUICK SETUP
@@ -19,7 +21,7 @@
 
 * 3、create the database and import the sql.
 ```
-   docker exec -ti fos_quant_platform_mysql_1 mysql -u root -p root
+   docker exec -ti fos_quant_platform_mysql_1 mysql -u root -proot
    create database quant;
    docker exec -i fos_quant_platform_mysql_1 mysql -uroot -proot quant < ./fos_quant_platform_mysql.sql
 ```
@@ -42,9 +44,3 @@ etc.
  
 ## Thanks
   HuoBiDM
- 
-
-
- 
- 
-  
